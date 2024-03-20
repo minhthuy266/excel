@@ -1,4 +1,5 @@
-import { Button, Checkbox, Form, Input } from "antd";
+import { Button, Form, Input } from "antd";
+import { useLoginMutation } from "features/auth/authApiSlice";
 import { setCredentials } from "features/auth/authSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -8,18 +9,23 @@ const LoginScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const [login, { isLoading }] = useLoginMutation();
+
+  console.log("object", login)
+
   const onFinish = (values) => {
     console.log("Success:", values);
-    navigate("/dash/general");
-
-    console.log("NAV", navigate);
-
-    dispatch(
-      setCredentials({
-        user: "admin",
-        accessToken: "lorem",
-      })
-    );
+    login(values).then((res) => {
+      if (res.data) {
+        dispatch(
+          setCredentials({
+            user: res.data.user,
+            accessToken: res.data.authorisation.token,
+          })
+        );
+        navigate("/dash/general");
+      }
+    });
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -70,17 +76,6 @@ const LoginScreen = () => {
           ]}
         >
           <Input.Password />
-        </Form.Item>
-
-        <Form.Item
-          name="remember"
-          valuePropName="checked"
-          wrapperCol={{
-            offset: 8,
-            span: 16,
-          }}
-        >
-          <Checkbox>Remember me</Checkbox>
         </Form.Item>
 
         <Form.Item

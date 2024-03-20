@@ -9,6 +9,8 @@ import FlagVI from 'assets/images/FlagIcon_vi.png'
 import FlagEN from 'assets/images/FlagIcon_en.png'
 import './styles.scss'
 import {useTranslation} from 'react-i18next'
+import { useSelector } from 'react-redux'
+import { selectCurrentUser } from 'features/auth/authSlice'
 
 const DashHeader = ({collapsed, colorBgContainer, setCollapsed}) => {
   const location = useLocation()
@@ -38,10 +40,8 @@ const DashHeader = ({collapsed, colorBgContainer, setCollapsed}) => {
     },
   ]
 
-  const handleChange = (value) => {
-    console.log(`selected ${value}`)
-    i18next.changeLanguage(value)
-  }
+
+  const user = useSelector(selectCurrentUser)
 
   const {Header} = Layout
   return (
@@ -73,35 +73,6 @@ const DashHeader = ({collapsed, colorBgContainer, setCollapsed}) => {
         </div>
 
         <div>
-          <Select
-            defaultValue={i18next.resolvedLanguage}
-            style={{
-              width: 100,
-            }}
-            showArrow={false}
-            onChange={handleChange}
-            options={[
-              {
-                value: 'vi',
-                label: (
-                  <span>
-                    <img src={FlagVI} alt='Flag VI' />
-                    <span>vi</span>
-                  </span>
-                ),
-              },
-              {
-                value: 'en',
-                label: (
-                  <span>
-                    <img src={FlagEN} alt='Flag EN' />
-                    <span>en</span>
-                  </span>
-                ),
-              },
-            ]}
-          />
-
           <Dropdown
             menu={{
               items,
@@ -119,8 +90,8 @@ const DashHeader = ({collapsed, colorBgContainer, setCollapsed}) => {
               </div>
 
               <div>
-                <div>Nguyễn Văn A</div>
-                <div>Manager</div>
+                <div>{user.name}</div>
+                <div>{user.username}</div>
               </div>
             </div>
           </Dropdown>

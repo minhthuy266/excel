@@ -2,8 +2,8 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { logOut, setCredentials } from "../../features/auth/authSlice";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:5500",
-  credentials: "include",
+  baseUrl: "https://api.trangdemo.net/api",
+  // credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const token = getState().auth.token;
     if (token) {
@@ -16,31 +16,31 @@ const baseQuery = fetchBaseQuery({
 const baseQueryWithReauth = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
 
-  if (result?.error?.originalStatus === 403) {
-    console.log("Sending refresh token");
-    // Send the refresh token
+  // if (result?.error?.originalStatus === 403) {
+  //   console.log("Sending refresh token");
+  //   // Send the refresh token
 
-    const refreshResult = await baseQuery("/refresh", api, extraOptions);
+  //   const refreshResult = await baseQuery("/refresh", api, extraOptions);
 
-    console.log("Refresh Result", refreshResult);
+  //   console.log("Refresh Result", refreshResult);
 
-    if (refreshResult?.data) {
-      const user = api.getState().auth.user;
-      // Store the new token
+  //   if (refreshResult?.data) {
+  //     const user = api.getState().auth.user;
+  //     // Store the new token
 
-      api.dispatch(
-        setCredentials({
-          ...refreshResult.data,
-          user,
-        })
-      );
+  //     api.dispatch(
+  //       setCredentials({
+  //         ...refreshResult.data,
+  //         user,
+  //       })
+  //     );
 
-      //   Retry the original query with new token
-      result = await baseQuery(args, api, extraOptions);
-    }
-  } else {
-    api.dispatch(logOut());
-  }
+  //     //   Retry the original query with new token
+  //     result = await baseQuery(args, api, extraOptions);
+  //   }
+  // } else {
+  //   api.dispatch(logOut());
+  // }
 
   return result;
 };
