@@ -8,6 +8,7 @@ import LoginScreen from "screen/LoginScreen";
 import PublicScreen from "screen/PublicScreen";
 import RequireAuth from "./features/auth/RequireAuth";
 import RoleScreen from "screen/RoleScreen";
+import "./index.css";
 
 function App() {
   const {

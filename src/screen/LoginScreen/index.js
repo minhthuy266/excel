@@ -11,21 +11,21 @@ const LoginScreen = () => {
 
   const [login, { isLoading }] = useLoginMutation();
 
-  console.log("object", login)
+  console.log("object", login);
 
   const onFinish = (values) => {
     console.log("Success:", values);
-    login(values).then((res) => {
-      if (res.data) {
-        dispatch(
-          setCredentials({
-            user: res.data.user,
-            accessToken: res.data.authorisation.token,
-          })
-        );
-        navigate("/dash/general");
-      }
-    });
+    // login(values).then((res) => {
+    //   if (res.data) {
+    //     dispatch(
+    //       setCredentials({
+    //         user: res.data.user,
+    //         accessToken: res.data.authorisation.token,
+    //       })
+    //     );
+    //   }
+    // });
+    navigate("/dash/general");
   };
 
   const onFinishFailed = (errorInfo) => {

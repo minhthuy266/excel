@@ -1,373 +1,248 @@
-import { Button, Select, Table } from "antd";
-import TagTable from "components/GlobalComponents/TagTable";
-import { StyledTitleSection } from "globalStyles/styles";
-import variables from "globalStyles/variables.scss";
-import { CSVLink } from "react-csv";
-import { useTranslation } from "react-i18next";
-import { FaFileExport } from "react-icons/fa";
-import { StyledHeaderWrapper, StyledProjectReport } from "./styles";
+import React, { useContext, useEffect, useRef, useState } from "react";
+// import "./index.css";
+import { Button, Form, Input, Popconfirm, Table } from "antd";
+const EditableContext = React.createContext(null);
+const EditableRow = ({ index, ...props }) => {
+  const [form] = Form.useForm();
+  return (
+    <Form form={form} component={false}>
+      <EditableContext.Provider value={form}>
+        <tr {...props} />
+      </EditableContext.Provider>
+    </Form>
+  );
+};
+const EditableCell = ({
+  title,
+  editable,
+  children,
+  dataIndex,
+  record,
+  handleSave,
+  ...restProps
+}) => {
+  const [editing, setEditing] = useState(false);
+  const inputRef = useRef(null);
+  const form = useContext(EditableContext);
+  useEffect(() => {
+    if (editing) {
+      inputRef.current.focus();
+    }
+  }, [editing]);
+  const toggleEdit = () => {
+    setEditing(!editing);
+    form.setFieldsValue({
+      [dataIndex]: record[dataIndex],
+    });
+  };
+  const save = async () => {
+    try {
+      const values = await form.validateFields();
+      toggleEdit();
+      handleSave({
+        ...record,
+        ...values,
+      });
+      console.log("ooooo", values);
+    } catch (errInfo) {
+      console.log("Save failed:", errInfo);
+    }
+  };
+  let childNode = children;
+  if (editable) {
+    childNode = editing ? (
+      <Form.Item
+        style={{
+          margin: 0,
+        }}
+        name={dataIndex}
+        rules={[
+          {
+            required: true,
+            message: `${title} is required.`,
+          },
+        ]}
+      >
+        <Input ref={inputRef} onPressEnter={save} onBlur={save} />
+      </Form.Item>
+    ) : (
+      <div
+        className="editable-cell-value-wrap"
+        style={{
+          paddingRight: 24,
+        }}
+        onClick={toggleEdit}
+      >
+        {children}
+      </div>
+    );
+  }
+  return <td {...restProps}>{childNode}</td>;
+};
 
 const ProjectReport = () => {
-  const { t } = useTranslation(["generalScreen", "common"]);
-
-  const columns = [
+  const [dataSource, setDataSource] = useState([
     {
-      title: `${t("tableContent.column.code", { ns: "common" })}`,
-      dataIndex: "code",
-      key: "code",
+      shipmentNo: "1",
+      deliveryDate: "15-Feb-24",
+      weight: "500,00",
+      plannedRevenue: "200.588,24",
+      paymentMilestone: "Advance Payment",
+      paymentPercentage: "5%",
+      paymentAmount: "10.000",
+      paymentDuration: "30",
+      paymentDate: "75.000",
+      paymentMethod: "30",
+      key: "0",
     },
-    {
-      title: `${t("tableContent.column.projectName", { ns: "common" })}`,
-      dataIndex: "project",
-      key: "project",
-    },
-    {
-      title: `${t("tableContent.column.customer", { ns: "common" })}`,
-      dataIndex: "customer",
-      key: "customer",
-    },
-    {
-      title: `${t("tableContent.column.progress", { ns: "common" })}`,
-      dataIndex: "progress",
-      key: "progress",
-      render: (_, { progress }) => (
-        <>
-          {progress === "Sản xuất" ? (
-            <TagTable
-              background={variables.colorPending20}
-              color={variables.colorPending}
-              border={`1px solid ${variables.colorPending20}}`}
-              text={`${t("tableContent.column.manufacturing", {
-                ns: "common",
-              })}`}
-            />
-          ) : progress === "Ký hợp đồng" ? (
-            <TagTable
-              background={variables.colorSuccess20}
-              color={variables.colorSuccess}
-              border={`1px solid ${variables.colorSuccess20}}`}
-              text={`${t("tableContent.column.contractSigning", {
-                ns: "common",
-              })}`}
-            />
-          ) : progress === "Thương thảo" ? (
-            <TagTable
-              background={variables.colorPrimary20}
-              color={variables.colorPrimary}
-              border={`1px solid ${variables.colorPrimary20}}`}
-              text={`${t("tableContent.column.deal", {
-                ns: "common",
-              })}`}
-            />
-          ) : (
-            <TagTable
-              background={variables.colorWarning20}
-              color={variables.colorWarning}
-              border={`1px solid ${variables.colorWarning20}}`}
-              text={`${t("tableContent.column.purchase", {
-                ns: "common",
-              })}`}
-            />
-          )}
-        </>
-      ),
-    },
-    {
-      title: `${t("tableContent.column.design", {
-        ns: "common",
-      })}`,
-      dataIndex: "design",
-      key: "design",
-    },
-
-    {
-      title: `${t("tableContent.column.purchase", {
-        ns: "common",
-      })}`,
-      dataIndex: "purchase",
-      key: "purchase",
-    },
-
-    {
-      title: `${t("tableContent.column.contractValue", {
-        ns: "common",
-      })}`,
-      dataIndex: "contractValue",
-      key: "contractValue",
-    },
-
-    {
-      title: `${t("tableContent.column.payment", {
-        ns: "common",
-      })}`,
-      dataIndex: "payment",
-      key: "payment",
-    },
-  ];
-
-  const data = [
     {
       key: "1",
-      code: "1",
-      project: "Workshop 5ha",
-      customer: "AMECC",
-      progress: "Sản xuất",
-      design: "Lorem ",
-      purchase: "consectetur",
-      contractValue: "10000",
-      payment: "123456",
+      name: "Edward King 1",
+      age: "32",
+      address: "London, Park Lane no. 1",
     },
-    {
-      key: "2",
-      code: "2",
-      project: "Black Point",
-      customer: "MIC",
-      progress: "Ký hợp đồng",
-      design: "Lorem ",
-      purchase: "consectetur",
-      contractValue: "10000",
-      payment: "123456",
-    },
-    {
-      key: "3",
-      code: "3",
-      project: "Datan",
-      customer: "ABCX",
-      progress: "Thương thảo",
-      design: "Lorem ",
-      purchase: "consectetur",
-      contractValue: "10000",
-      payment: "123456",
-    },
-
-    {
-      key: "4",
-      code: "4",
-      project: "Joe Black",
-      customer: "KDJS",
-      progress: "Mua sắm",
-      design: "Lorem ",
-      purchase: "consectetur",
-      contractValue: "10000",
-      payment: "123456",
-    },
-
-    {
-      key: "5",
-      code: "5",
-      project: "Workshop 5ha",
-      customer: "AMECC",
-      progress: "Sản xuất",
-      design: "Lorem ",
-      purchase: "consectetur",
-      contractValue: "10000",
-      payment: "123456",
-    },
-    {
-      key: "6",
-      code: "6",
-      project: "Black Point",
-      customer: "MIC",
-      progress: "Ký hợp đồng",
-      design: "Lorem ",
-      purchase: "consectetur",
-      contractValue: "10000",
-      payment: "123456",
-    },
-    {
-      key: "7",
-      code: "7",
-      project: "Datan",
-      customer: "ABCX",
-      progress: "Thương thảo",
-      design: "Lorem ",
-      purchase: "consectetur",
-      contractValue: "10000",
-      payment: "123456",
-    },
-
-    {
-      key: "8",
-      code: "8",
-      project: "Joe Black",
-      customer: "KDJS",
-      progress: "Mua sắm",
-      design: "Lorem ",
-      purchase: "consectetur",
-      contractValue: "10000",
-      payment: "123456",
-    },
-
-    {
-      key: "9",
-      code: "9",
-      project: "Workshop 5ha",
-      customer: "AMECC",
-      progress: "Sản xuất",
-      design: "Lorem ",
-      purchase: "consectetur",
-      contractValue: "10000",
-      payment: "123456",
-    },
-    {
-      key: "10",
-      code: "10",
-      project: "Black Point",
-      customer: "MIC",
-      progress: "Ký hợp đồng",
-      design: "Lorem ",
-      purchase: "consectetur",
-      contractValue: "10000",
-      payment: "123456",
-    },
-    {
-      key: "11",
-      code: "11",
-      project: "Datan",
-      customer: "ABCX",
-      progress: "Thương thảo",
-      design: "Lorem ",
-      purchase: "consectetur",
-      contractValue: "10000",
-      payment: "123456",
-    },
-
-    {
-      key: "12",
-      code: "12",
-      project: "Joe Black",
-      customer: "KDJS",
-      progress: "Mua sắm",
-      design: "Lorem ",
-      purchase: "consectetur",
-      contractValue: "10000",
-      payment: "123456",
-    },
-
-    {
-      key: "13",
-      code: "13",
-      project: "Workshop 5ha",
-      customer: "AMECC",
-      progress: "Sản xuất",
-      design: "Lorem ",
-      purchase: "consectetur",
-      contractValue: "10000",
-      payment: "123456",
-    },
-    {
-      key: "14",
-      code: "14",
-      project: "Black Point",
-      customer: "MIC",
-      progress: "Ký hợp đồng",
-      design: "Lorem ",
-      purchase: "consectetur",
-      contractValue: "10000",
-      payment: "123456",
-    },
-    {
-      key: "15",
-      code: "15",
-      project: "Datan",
-      customer: "ABCX",
-      progress: "Thương thảo",
-      design: "Lorem ",
-      purchase: "consectetur",
-      contractValue: "10000",
-      payment: "123456",
-    },
-
-    {
-      key: "16",
-      code: "16",
-      project: "Joe Black",
-      customer: "KDJS",
-      progress: "Mua sắm",
-      design: "Lorem ",
-      purchase: "consectetur",
-      contractValue: "10000",
-      payment: "123456",
-    },
-  ];
-
-  const headers = [
-    { label: "Mã", key: "code" },
-    { label: "Tên dự án", key: "project" },
-    { label: "Khách hàng", key: "customer" },
-    { label: "Tiến độ", key: "progress" },
-    { label: "Thiết kế", key: "design" },
-    { label: "Mua sắm", key: "purchase" },
-    { label: "Giá trị hợp đồng", key: "contractValue" },
-    { label: "Thanh toán", key: "payment" },
-  ];
-
-  const handleChange = (value) => {
-    console.log(`selected ${value}`);
+  ]);
+  const [count, setCount] = useState(2);
+  const handleDelete = (key) => {
+    const newData = dataSource.filter((item) => item.key !== key);
+    setDataSource(newData);
   };
+  const defaultColumns = [
+    {
+      title: "Shipment No",
+      dataIndex: "shipmentNo",
+      editable: true,
+      fixed: "left",
+    },
+    {
+      title: "Delivery Date",
+      dataIndex: "deliveryDate",
+      editable: true,
+    },
+    {
+      title: "Weight",
+      dataIndex: "weight",
+      editable: true,
+    },
+    {
+      title: "Planned Revenue",
+      dataIndex: "plannedRevenue",
+      editable: true,
+    },
+    {
+      title: "Payment Milestone",
+      dataIndex: "paymentMilestone",
+      editable: true,
+    },
+    {
+      title: "Payment (%)",
+      dataIndex: "paymentPercentage",
+      editable: true,
+    },
+    {
+      title: "Payment Amount",
+      dataIndex: "paymentAmount",
+      editable: true,
+    },
+
+    {
+      title: "Payment Duration",
+      dataIndex: "paymentDuration",
+      editable: true,
+    },
+
+    {
+      title: "Payment Date",
+      dataIndex: "paymentDate",
+      editable: true,
+    },
+    {
+      title: "Payment Method",
+      dataIndex: "paymentMethod",
+      editable: true,
+    },
+    {
+      title: "operation",
+      dataIndex: "operation",
+      render: (_, record) =>
+        dataSource.length >= 1 ? (
+          <Popconfirm
+            title="Sure to delete?"
+            onConfirm={() => handleDelete(record.key)}
+          >
+            <a>Delete</a>
+          </Popconfirm>
+        ) : null,
+      fixed: "right",
+    },
+  ];
+  const handleAdd = () => {
+    const newData = {
+      key: count,
+      name: `Edward King ${count}`,
+      age: "32",
+      address: `London, Park Lane no. ${count}`,
+    };
+    setDataSource([...dataSource, newData]);
+    setCount(count + 1);
+  };
+  const handleSave = (row) => {
+    const newData = [...dataSource];
+    const index = newData.findIndex((item) => row.key === item.key);
+    const item = newData[index];
+    newData.splice(index, 1, {
+      ...item,
+      ...row,
+    });
+    setDataSource(newData);
+  };
+  const components = {
+    body: {
+      row: EditableRow,
+      cell: EditableCell,
+    },
+  };
+  const columns = defaultColumns.map((col) => {
+    if (!col.editable) {
+      return col;
+    }
+    return {
+      ...col,
+      onCell: (record) => ({
+        record,
+        editable: col.editable,
+        dataIndex: col.dataIndex,
+        title: col.title,
+        handleSave,
+      }),
+    };
+  });
+
+  console.log("dataSource", dataSource);
 
   return (
-    <StyledProjectReport>
-      <StyledHeaderWrapper>
-        <StyledTitleSection>{t("titleTable")}</StyledTitleSection>
-
-        <div>
-          <Select
-            defaultValue="2023"
-            style={{
-              width: 120,
-            }}
-            onChange={handleChange}
-            options={[
-              {
-                value: "2023",
-                label: "2023",
-              },
-              {
-                value: "2022",
-                label: "2022",
-              },
-              {
-                value: "2021",
-                label: "2021",
-              },
-              {
-                value: "2020",
-                label: "2020",
-              },
-              {
-                value: "2019",
-                label: "2019",
-              },
-              {
-                value: "2018",
-                label: "2018",
-              },
-              {
-                value: "2017",
-                label: "2017",
-              },
-            ]}
-          />
-
-          <CSVLink
-            data={data}
-            headers={headers}
-            filename={`${t("titleTable")}.csv`}
-            onClick={() => {
-              console.log("clicked");
-            }}
-          >
-            <Button type="primary">
-              <FaFileExport /> &nbsp;
-              {t("globalBtn.excelExportBtn", { ns: "common" })}
-            </Button>
-          </CSVLink>
-        </div>
-      </StyledHeaderWrapper>
-
-      <Table columns={columns} dataSource={data} />
-    </StyledProjectReport>
+    <div>
+      <Button
+        onClick={handleAdd}
+        type="primary"
+        style={{
+          marginBottom: 16,
+        }}
+      >
+        Add a row
+      </Button>
+      <Table
+        components={components}
+        rowClassName={() => "editable-row"}
+        bordered
+        dataSource={dataSource}
+        columns={columns}
+        scroll={{
+          x: 1800,
+          y: 400,
+        }}
+      />
+    </div>
   );
 };
 

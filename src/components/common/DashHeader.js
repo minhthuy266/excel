@@ -1,69 +1,66 @@
-import {MenuFoldOutlined, MenuUnfoldOutlined} from '@ant-design/icons'
-import {Avatar, Breadcrumb, Dropdown, Layout, Select} from 'antd'
-import React, {useEffect, useState} from 'react'
-import {useLocation} from 'react-router'
-import i18next from 'i18next'
-import {StyledBreadcrumbs, StyledHeaderWrapper} from './styles'
-import variables from 'globalStyles/variables.scss'
-import FlagVI from 'assets/images/FlagIcon_vi.png'
-import FlagEN from 'assets/images/FlagIcon_en.png'
-import './styles.scss'
-import {useTranslation} from 'react-i18next'
-import { useSelector } from 'react-redux'
-import { selectCurrentUser } from 'features/auth/authSlice'
+import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
+import { Avatar, Breadcrumb, Dropdown, Layout } from "antd";
+import { selectCurrentUser } from "features/auth/authSlice";
+import variables from "globalStyles/variables.scss";
+import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { useLocation } from "react-router";
+import { StyledBreadcrumbs, StyledHeaderWrapper } from "./styles";
+import "./styles.scss";
 
-const DashHeader = ({collapsed, colorBgContainer, setCollapsed}) => {
-  const location = useLocation()
-  const [, b, c, d] = location?.pathname?.split('/')
-  const [breadcrumb2, setBreadcrumb2] = useState('')
-  const [breadcrumb3, setBreadcrumb3] = useState('')
+const DashHeader = ({ collapsed, colorBgContainer, setCollapsed }) => {
+  const location = useLocation();
+  const [, b, c, d] = location?.pathname?.split("/");
+  const [breadcrumb2, setBreadcrumb2] = useState("");
+  const [breadcrumb3, setBreadcrumb3] = useState("");
 
-  const {t} = useTranslation(['common'])
+  const { t } = useTranslation(["common"]);
 
   useEffect(() => {
-    setBreadcrumb2(c)
-    setBreadcrumb3(d)
-  }, [b, c, d])
+    setBreadcrumb2(c);
+    setBreadcrumb3(d);
+  }, [b, c, d]);
 
   const items = [
     {
-      key: '1',
-      label: <div>{t('header.userDropdown.item1')}</div>,
+      key: "1",
+      label: <div>{t("header.userDropdown.item1")}</div>,
     },
     {
-      key: '2',
-      label: <div>{t('header.userDropdown.item2')}</div>,
+      key: "2",
+      label: <div>{t("header.userDropdown.item2")}</div>,
     },
     {
-      key: '3',
-      label: <div>{t('header.userDropdown.item3')}</div>,
+      key: "3",
+      label: <div>{t("header.userDropdown.item3")}</div>,
     },
-  ]
+  ];
 
+  const user = useSelector(selectCurrentUser);
 
-  const user = useSelector(selectCurrentUser)
-
-  const {Header} = Layout
+  const { Header } = Layout;
   return (
     <Header
       style={{
         padding: 20,
         background: colorBgContainer,
-      }}>
+      }}
+    >
       <StyledHeaderWrapper collapsed={collapsed}>
         <div>
           {React.createElement(
             collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
             {
-              className: 'trigger',
+              className: "trigger",
               onClick: () => setCollapsed(!collapsed),
             }
           )}
 
           <StyledBreadcrumbs>
             <Breadcrumb>
-              <Breadcrumb.Item>{t('header.breadcrumbs.item1')}</Breadcrumb.Item>
-              <Breadcrumb.Item>{t('header.breadcrumbs.item2')}</Breadcrumb.Item>
+              <Breadcrumb.Item>{t("header.breadcrumbs.item1")}</Breadcrumb.Item>
+              <Breadcrumb.Item>{t("header.breadcrumbs.item2")}</Breadcrumb.Item>
               <Breadcrumb.Item>{t(`sidebar.${breadcrumb2}`)}</Breadcrumb.Item>
               {breadcrumb3 && (
                 <Breadcrumb.Item>{t(`sidebar.${breadcrumb3}`)}</Breadcrumb.Item>
@@ -77,16 +74,18 @@ const DashHeader = ({collapsed, colorBgContainer, setCollapsed}) => {
             menu={{
               items,
             }}
-            placement='bottomLeft'>
+            placement="bottomLeft"
+          >
             <div>
               <div>
                 <Avatar
                   style={{
                     backgroundColor: `${variables.colorPrimary}`,
-                    verticalAlign: 'middle',
-                    marginRight: '1rem',
+                    verticalAlign: "middle",
+                    marginRight: "1rem",
                   }}
-                  size='large'></Avatar>
+                  size="large"
+                ></Avatar>
               </div>
 
               <div>
@@ -98,7 +97,7 @@ const DashHeader = ({collapsed, colorBgContainer, setCollapsed}) => {
         </div>
       </StyledHeaderWrapper>
     </Header>
-  )
-}
+  );
+};
 
-export default DashHeader
+export default DashHeader;
