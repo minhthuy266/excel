@@ -54,6 +54,24 @@ const Sider = ({ collapsed }) => {
           },
 
           {
+            key: "/dash/payment-plan",
+            icon: <HomeOutlined />,
+            label: "Payment Plan",
+          },
+
+          {
+            key: "/dash/payment-actual",
+            icon: <HomeOutlined />,
+            label: "Payment Actual",
+          },
+
+          {
+            key: "/dash/budget",
+            icon: <HomeOutlined />,
+            label: "Budget",
+          },
+
+          {
             key: "/dash/role",
             icon: <HomeOutlined />,
             label: "Quản lý vai trò",
