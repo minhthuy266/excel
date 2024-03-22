@@ -1,14 +1,14 @@
+// import "./index.css";
 import { theme } from "antd";
 import DashLayout from "components/common/DashLayout";
 import Layout from "components/common/Layout";
 import { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
-import GeneralScreen from "screen/GeneralScreen";
+import ContractScreen from "screen/ContractScreen";
 import LoginScreen from "screen/LoginScreen";
 import PublicScreen from "screen/PublicScreen";
 import RequireAuth from "./features/auth/RequireAuth";
 import RoleScreen from "screen/RoleScreen";
-import "./index.css";
 
 function App() {
   const {
@@ -17,7 +17,7 @@ function App() {
 
   useEffect(() => {
     if (localStorage.getItem("currentScreen")) {
-      localStorage.setItem("currentScreen", "/dash/general");
+      localStorage.setItem("currentScreen", "/dash/contract");
     }
   }, []);
 
@@ -35,7 +35,7 @@ function App() {
             path="dash"
             element={<DashLayout colorBgContainer={colorBgContainer} />}
           >
-            <Route path="general" element={<GeneralScreen />}></Route>
+            <Route path="contract" element={<ContractScreen />}></Route>
             <Route path="role" element={<RoleScreen />}></Route>
           </Route>
         </Route>

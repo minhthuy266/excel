@@ -10,7 +10,7 @@ export const DashLayoutContainer = styled.div`
     position: fixed;
     top: 0;
     bottom: 0;
-    z-index: 2;
+    z-index: 1000;
   }
 
   .ant-layout .ant-layout-header {
@@ -20,7 +20,7 @@ export const DashLayoutContainer = styled.div`
     left: 0;
     right: 0;
     left: ${(props) => (props.collapsed ? "80px" : "260px")};
-    z-index: 1;
+    z-index: 1000;
     box-shadow: rgba(23, 25, 26, 0.1) 4px 4px 10px;
   }
 

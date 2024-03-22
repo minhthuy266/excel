@@ -42,6 +42,7 @@ const DashHeader = ({ collapsed, colorBgContainer, setCollapsed }) => {
   const { Header } = Layout;
   return (
     <Header
+      className="z-10"
       style={{
         padding: 20,
         background: colorBgContainer,
@@ -57,7 +58,7 @@ const DashHeader = ({ collapsed, colorBgContainer, setCollapsed }) => {
             }
           )}
 
-          <StyledBreadcrumbs>
+          {/* <StyledBreadcrumbs>
             <Breadcrumb>
               <Breadcrumb.Item>{t("header.breadcrumbs.item1")}</Breadcrumb.Item>
               <Breadcrumb.Item>{t("header.breadcrumbs.item2")}</Breadcrumb.Item>
@@ -66,7 +67,7 @@ const DashHeader = ({ collapsed, colorBgContainer, setCollapsed }) => {
                 <Breadcrumb.Item>{t(`sidebar.${breadcrumb3}`)}</Breadcrumb.Item>
               )}
             </Breadcrumb>
-          </StyledBreadcrumbs>
+          </StyledBreadcrumbs> */}
         </div>
 
         <div>

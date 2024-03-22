@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
-// import "./index.css";
 import { Button, Form, Input, Popconfirm, Table } from "antd";
+import React, { useContext, useEffect, useRef, useState } from "react";
 const EditableContext = React.createContext(null);
 const EditableRow = ({ index, ...props }) => {
   const [form] = Form.useForm();
@@ -80,7 +79,7 @@ const EditableCell = ({
   return <td {...restProps}>{childNode}</td>;
 };
 
-const ProjectReport = () => {
+const ProjectReport = ({ isEdit, setIsEdit }) => {
   const [dataSource, setDataSource] = useState([
     {
       shipmentNo: "1",
@@ -95,12 +94,6 @@ const ProjectReport = () => {
       paymentMethod: "30",
       key: "0",
     },
-    {
-      key: "1",
-      name: "Edward King 1",
-      age: "32",
-      address: "London, Park Lane no. 1",
-    },
   ]);
   const [count, setCount] = useState(2);
   const handleDelete = (key) => {
@@ -111,58 +104,58 @@ const ProjectReport = () => {
     {
       title: "Shipment No",
       dataIndex: "shipmentNo",
-      editable: true,
+      editable: isEdit,
       fixed: "left",
     },
     {
       title: "Delivery Date",
       dataIndex: "deliveryDate",
-      editable: true,
+      editable: isEdit,
     },
     {
       title: "Weight",
       dataIndex: "weight",
-      editable: true,
+      editable: isEdit,
     },
     {
       title: "Planned Revenue",
       dataIndex: "plannedRevenue",
-      editable: true,
+      editable: isEdit,
     },
     {
       title: "Payment Milestone",
       dataIndex: "paymentMilestone",
-      editable: true,
+      editable: isEdit,
     },
     {
       title: "Payment (%)",
       dataIndex: "paymentPercentage",
-      editable: true,
+      editable: isEdit,
     },
     {
       title: "Payment Amount",
       dataIndex: "paymentAmount",
-      editable: true,
+      editable: isEdit,
     },
 
     {
       title: "Payment Duration",
       dataIndex: "paymentDuration",
-      editable: true,
+      editable: isEdit,
     },
 
     {
       title: "Payment Date",
       dataIndex: "paymentDate",
-      editable: true,
+      editable: isEdit,
     },
     {
       title: "Payment Method",
       dataIndex: "paymentMethod",
-      editable: true,
+      editable: isEdit,
     },
     {
-      title: "operation",
+      title: "",
       dataIndex: "operation",
       render: (_, record) =>
         dataSource.length >= 1 ? (
@@ -178,10 +171,17 @@ const ProjectReport = () => {
   ];
   const handleAdd = () => {
     const newData = {
+      shipmentNo: count,
+      deliveryDate: "",
+      weight: "",
+      plannedRevenue: "",
+      paymentMilestone: "",
+      paymentPercentage: "",
+      paymentAmount: "",
+      paymentDuration: "",
+      paymentDate: "",
+      paymentMethod: "",
       key: count,
-      name: `Edward King ${count}`,
-      age: "32",
-      address: `London, Park Lane no. ${count}`,
     };
     setDataSource([...dataSource, newData]);
     setCount(count + 1);
@@ -239,7 +239,6 @@ const ProjectReport = () => {
         columns={columns}
         scroll={{
           x: 1800,
-          y: 400,
         }}
       />
     </div>

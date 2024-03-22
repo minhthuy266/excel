@@ -25,7 +25,7 @@ const LoginScreen = () => {
     //     );
     //   }
     // });
-    navigate("/dash/general");
+    navigate("/dash/contract");
   };
 
   const onFinishFailed = (errorInfo) => {
