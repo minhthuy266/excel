@@ -72,6 +72,12 @@ const Sider = ({ collapsed }) => {
           },
 
           {
+            key: "/dash/bo",
+            icon: <HomeOutlined />,
+            label: "BO",
+          },
+
+          {
             key: "/dash/role",
             icon: <HomeOutlined />,
             label: "Quản lý vai trò",
