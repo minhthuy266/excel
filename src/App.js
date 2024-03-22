@@ -13,6 +13,7 @@ import PaymentPlanScreen from "screen/PaymentPlanScreen";
 import PaymentActualScreen from "screen/PaymentActualScreen";
 import BudgetScreen from "screen/BudgetScreen";
 import POScreen from "screen/POScreen";
+import CostControlScreen from "screen/CostControlScreen";
 
 function App() {
   const {
@@ -47,6 +48,7 @@ function App() {
             ></Route>
             <Route path="budget" element={<BudgetScreen />}></Route>
             <Route path="bo" element={<POScreen />}></Route>
+            <Route path="cost-control" element={<CostControlScreen />}></Route>
             <Route path="role" element={<RoleScreen />}></Route>
           </Route>
         </Route>
