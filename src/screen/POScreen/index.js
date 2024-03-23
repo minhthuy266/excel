@@ -1,6 +1,6 @@
 import { Switch } from "antd";
-import FormTop from "components/BOScreenComponents/FormTop";
-import TableBottom from "components/BOScreenComponents/TableBottom";
+import FormTop from "components/POScreenComponents/FormTop";
+import TableBottom from "components/POScreenComponents/TableBottom";
 import React, { useState } from "react";
 
 const POScreen = () => {

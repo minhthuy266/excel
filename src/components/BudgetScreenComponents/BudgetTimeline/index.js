@@ -1,11 +1,15 @@
 import React from "react";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Form, Input, Space } from "antd";
+import { Button, DatePicker, Form, Input, Space } from "antd";
 const onFinish = (values) => {
   console.log("Received values of form:", values);
 };
 
 const BudgetTimeline = () => {
+  const onChange = (date, dateString) => {
+    console.log(date, dateString);
+  };
+
   return (
     <div>
       <div className="my-16 text-[24px]">Budget Timeline</div>
@@ -39,7 +43,7 @@ const BudgetTimeline = () => {
                       },
                     ]}
                   >
-                    <Input placeholder="Ngày" />
+                    <DatePicker onChange={onChange} />
                   </Form.Item>
                   <Form.Item
                     {...restField}

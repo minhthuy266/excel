@@ -1,4 +1,4 @@
-import { Button, Form, Input, Popconfirm, Table } from "antd";
+import { Button, DatePicker, Form, Input, Popconfirm, Table } from "antd";
 import React, { useContext, useEffect, useRef, useState } from "react";
 const EditableContext = React.createContext(null);
 const EditableRow = ({ index, ...props }) => {
@@ -100,6 +100,9 @@ const ProjectReport = ({ isEdit, setIsEdit }) => {
     const newData = dataSource.filter((item) => item.key !== key);
     setDataSource(newData);
   };
+  const onChange = (date, dateString) => {
+    console.log(date, dateString);
+  };
   const defaultColumns = [
     {
       title: "Shipment No",
@@ -110,7 +113,13 @@ const ProjectReport = ({ isEdit, setIsEdit }) => {
     {
       title: "Delivery Date",
       dataIndex: "deliveryDate",
-      editable: isEdit,
+      render: (text, record) => {
+        return (
+          <div>
+            <DatePicker onChange={onChange} />
+          </div>
+        );
+      },
     },
     {
       title: "Weight",
@@ -147,7 +156,13 @@ const ProjectReport = ({ isEdit, setIsEdit }) => {
     {
       title: "Payment Date",
       dataIndex: "paymentDate",
-      editable: isEdit,
+      render: (text, record) => {
+        return (
+          <div>
+            <DatePicker onChange={onChange} />
+          </div>
+        );
+      },
     },
     {
       title: "Payment Method",

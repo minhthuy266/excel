@@ -47,7 +47,7 @@ function App() {
               element={<PaymentActualScreen />}
             ></Route>
             <Route path="budget" element={<BudgetScreen />}></Route>
-            <Route path="bo" element={<POScreen />}></Route>
+            <Route path="po" element={<POScreen />}></Route>
             <Route path="cost-control" element={<CostControlScreen />}></Route>
             <Route path="role" element={<RoleScreen />}></Route>
           </Route>

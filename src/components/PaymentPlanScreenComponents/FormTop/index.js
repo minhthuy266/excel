@@ -1,4 +1,4 @@
-import { Col, Form, Input, Row } from "antd";
+import { Col, Form, Input, Row, Select } from "antd";
 const layout = {
   labelCol: {
     span: 8,
@@ -25,6 +25,21 @@ const onFinish = (values) => {
   console.log(values);
 };
 
+const { Option } = Select;
+const suffixSelectorContractAmount = (
+  <Form.Item name="suffix" noStyle>
+    <Select
+      style={{
+        width: 100,
+      }}
+      defaultValue="VND"
+    >
+      <Option value="USD">USD</Option>
+      <Option value="VND">VND</Option>
+    </Select>
+  </Form.Item>
+);
+
 const FormTop = ({ isEdit }) => {
   return (
     <Form
@@ -37,15 +52,7 @@ const FormTop = ({ isEdit }) => {
     >
       <Row gutter={24}>
         <Col span={12}>
-          <Form.Item
-            name={["user", "projectNo"]}
-            label="Project No"
-            rules={[
-              {
-                required: true,
-              },
-            ]}
-          >
+          <Form.Item name={["user", "projectNo"]} label="Project No">
             <Input />
           </Form.Item>
           <Form.Item name={["user", "projectName"]} label="Project Name">
@@ -57,7 +64,7 @@ const FormTop = ({ isEdit }) => {
           </Form.Item>
 
           <Form.Item name={["user", "contractAmount"]} label="Contract Amount">
-            <Input />
+            <Input addonAfter={suffixSelectorContractAmount} />
           </Form.Item>
         </Col>
 

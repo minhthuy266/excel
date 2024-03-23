@@ -1,4 +1,4 @@
-import { Col, Form, Input, Row } from "antd";
+import { Col, DatePicker, Form, Input, Row } from "antd";
 const layout = {
   labelCol: {
     span: 8,
@@ -25,6 +25,10 @@ const onFinish = (values) => {
   console.log(values);
 };
 
+const onChange = (date, dateString) => {
+  console.log(date, dateString);
+};
+
 const FormTop = ({ isEdit }) => {
   return (
     <Form
@@ -37,15 +41,7 @@ const FormTop = ({ isEdit }) => {
     >
       <Row gutter={24}>
         <Col span={12}>
-          <Form.Item
-            name={["user", "projectNo"]}
-            label="Project No"
-            rules={[
-              {
-                required: true,
-              },
-            ]}
-          >
+          <Form.Item name={["user", "projectNo"]} label="Project No">
             <Input />
           </Form.Item>
           <Form.Item name={["user", "poNo"]} label="PO No">
@@ -77,7 +73,7 @@ const FormTop = ({ isEdit }) => {
           </Form.Item>
 
           <Form.Item name={["user", "poDate"]} label="PO Date">
-            <Input />
+            <DatePicker onChange={onChange} />
           </Form.Item>
 
           <Form.Item name={["user", "rev"]} label="Rev">

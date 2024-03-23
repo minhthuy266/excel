@@ -1,4 +1,4 @@
-import { Col, Form, Input, Row } from "antd";
+import { Col, DatePicker, Form, Input, Row, Select } from "antd";
 const layout = {
   labelCol: {
     span: 8,
@@ -25,6 +25,40 @@ const onFinish = (values) => {
   console.log(values);
 };
 
+const { Option } = Select;
+
+const suffixSelectorContractAmount = (
+  <Form.Item name="suffix" noStyle>
+    <Select
+      style={{
+        width: 100,
+      }}
+      defaultValue="VND"
+    >
+      <Option value="USD">USD</Option>
+      <Option value="VND">VND</Option>
+    </Select>
+  </Form.Item>
+);
+
+const suffixSelectorTotalWeight = (
+  <Form.Item name="suffixSelectorTotalWeight" noStyle>
+    <Select
+      style={{
+        width: 100,
+      }}
+      defaultValue="Ton"
+    >
+      <Option value="Ton">Ton</Option>
+      <Option value="Kg">Kg</Option>
+    </Select>
+  </Form.Item>
+);
+
+const onChange = (date, dateString) => {
+  console.log(date, dateString);
+};
+
 const FormTop = ({ isEdit }) => {
   return (
     <Form
@@ -37,15 +71,7 @@ const FormTop = ({ isEdit }) => {
     >
       <Row gutter={24}>
         <Col span={12}>
-          <Form.Item
-            name={["user", "projectNo"]}
-            label="Project No"
-            rules={[
-              {
-                required: true,
-              },
-            ]}
-          >
+          <Form.Item name={["user", "projectNo"]} label="Project No">
             <Input />
           </Form.Item>
           <Form.Item name={["user", "projectName"]} label="Project Name">
@@ -57,14 +83,14 @@ const FormTop = ({ isEdit }) => {
           </Form.Item>
 
           <Form.Item name={["user", "contractAmount"]} label="Contract Amount">
-            <Input />
+            <Input addonAfter={suffixSelectorContractAmount} />
           </Form.Item>
 
           <Form.Item name={["user", "totalWeight"]} label="Total Weight">
-            <Input />
+            <Input addonAfter={suffixSelectorTotalWeight} />
           </Form.Item>
           <Form.Item name={["user", "unitPrice"]} label="Unit Price">
-            <Input />
+            <Input addonAfter={suffixSelectorTotalWeight} />
           </Form.Item>
         </Col>
 
@@ -73,7 +99,7 @@ const FormTop = ({ isEdit }) => {
             <Input />
           </Form.Item>
           <Form.Item name={["user", "contractDate"]} label="Contract Date">
-            <Input />
+            <DatePicker onChange={onChange} />
           </Form.Item>
         </Col>
       </Row>

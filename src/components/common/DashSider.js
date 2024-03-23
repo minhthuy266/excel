@@ -1,4 +1,11 @@
-import { HomeOutlined } from "@ant-design/icons";
+import {
+  HomeOutlined,
+  DollarOutlined,
+  MoneyCollectOutlined,
+  BlockOutlined,
+  UserOutlined,
+  ControlOutlined,
+} from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import LogoIcon from "assets/icons/LogoIcon";
 import { useState } from "react";
@@ -55,37 +62,37 @@ const Sider = ({ collapsed }) => {
 
           {
             key: "/dash/payment-plan",
-            icon: <HomeOutlined />,
+            icon: <DollarOutlined />,
             label: "Payment Plan",
           },
 
           {
             key: "/dash/payment-actual",
-            icon: <HomeOutlined />,
+            icon: <MoneyCollectOutlined />,
             label: "Payment Actual",
           },
 
           {
             key: "/dash/budget",
-            icon: <HomeOutlined />,
+            icon: <BlockOutlined />,
             label: "Budget",
           },
 
           {
-            key: "/dash/bo",
+            key: "/dash/po",
             icon: <HomeOutlined />,
-            label: "BO",
+            label: "PO",
           },
 
           {
             key: "/dash/cost-control",
-            icon: <HomeOutlined />,
+            icon: <ControlOutlined />,
             label: "Cost Control",
           },
 
           {
             key: "/dash/role",
-            icon: <HomeOutlined />,
+            icon: <UserOutlined />,
             label: "Quản lý vai trò",
           },
         ]}

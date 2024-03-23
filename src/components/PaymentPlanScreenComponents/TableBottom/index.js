@@ -1,4 +1,4 @@
-import { Button, Form, Input, Popconfirm, Table } from "antd";
+import { Button, DatePicker, Form, Input, Popconfirm, Table } from "antd";
 import React, { useContext, useEffect, useRef, useState } from "react";
 const EditableContext = React.createContext(null);
 const EditableRow = ({ index, ...props }) => {
@@ -107,6 +107,11 @@ const TableBottom = ({ isEdit, setIsEdit }) => {
     const newData = dataSource.filter((item) => item.key !== key);
     setDataSource(newData);
   };
+
+  const onChange = (date, dateString) => {
+    console.log(date, dateString);
+  };
+
   const defaultColumns = [
     {
       title: "Plan Payment Milestone",
@@ -132,17 +137,35 @@ const TableBottom = ({ isEdit, setIsEdit }) => {
     {
       title: "Submitted Date",
       dataIndex: "submittedDate",
-      editable: isEdit,
+      render: (text, record) => {
+        return (
+          <div>
+            <DatePicker onChange={onChange} />
+          </div>
+        );
+      },
     },
     {
       title: "Approved Payment Date",
       dataIndex: "approvedPaymentDate",
-      editable: isEdit,
+      render: (text, record) => {
+        return (
+          <div>
+            <DatePicker onChange={onChange} />
+          </div>
+        );
+      },
     },
     {
       title: "Update Payment Date",
       dataIndex: "updatePaymentDate",
-      editable: isEdit,
+      render: (text, record) => {
+        return (
+          <div>
+            <DatePicker onChange={onChange} />
+          </div>
+        );
+      },
     },
     {
       title: "",
@@ -225,7 +248,7 @@ const TableBottom = ({ isEdit, setIsEdit }) => {
         dataSource={dataSource}
         columns={columns}
         scroll={{
-          x: 1200,
+          x: 1600,
         }}
       />
     </div>
