@@ -25,6 +25,7 @@ const LoginScreen = () => {
     //     );
     //   }
     // });
+    localStorage.setItem("currentScreen", "/dash/contract");
     navigate("/dash/contract");
   };
 
