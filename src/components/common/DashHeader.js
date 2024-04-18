@@ -90,8 +90,8 @@ const DashHeader = ({ collapsed, colorBgContainer, setCollapsed }) => {
               </div>
 
               <div>
-                <div>{user.name}</div>
-                <div>{user.username}</div>
+                <div>{user?.name}</div>
+                <div>{user?.username}</div>
               </div>
             </div>
           </Dropdown>

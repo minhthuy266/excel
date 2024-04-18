@@ -1,4 +1,5 @@
 import { Button, DatePicker, Form, Input, Popconfirm, Table } from "antd";
+import moment from "moment";
 import React, { useContext, useEffect, useRef, useState } from "react";
 const EditableContext = React.createContext(null);
 const EditableRow = ({ index, ...props }) => {
@@ -79,7 +80,7 @@ const EditableCell = ({
   return <td {...restProps}>{childNode}</td>;
 };
 
-const ProjectReport = ({ isEdit, setIsEdit }) => {
+const ProjectReport = ({ isEdit, setIsEdit, contract }) => {
   const [dataSource, setDataSource] = useState([
     {
       shipmentNo: "1",
@@ -106,17 +107,17 @@ const ProjectReport = ({ isEdit, setIsEdit }) => {
   const defaultColumns = [
     {
       title: "Shipment No",
-      dataIndex: "shipmentNo",
+      dataIndex: "shipment_no",
       editable: isEdit,
       fixed: "left",
     },
     {
       title: "Delivery Date",
-      dataIndex: "deliveryDate",
+      dataIndex: "delivery_date",
       render: (text, record) => {
         return (
           <div>
-            <DatePicker onChange={onChange} />
+            <DatePicker onChange={onChange} value={moment(record.delivery_date)} />
           </div>
         );
       },
@@ -128,45 +129,45 @@ const ProjectReport = ({ isEdit, setIsEdit }) => {
     },
     {
       title: "Planned Revenue",
-      dataIndex: "plannedRevenue",
+      dataIndex: "planned_revenue",
       editable: isEdit,
     },
     {
       title: "Payment Milestone",
-      dataIndex: "paymentMilestone",
+      dataIndex: "payment_milestone",
       editable: isEdit,
     },
     {
       title: "Payment (%)",
-      dataIndex: "paymentPercentage",
+      dataIndex: "payment_percent",
       editable: isEdit,
     },
     {
       title: "Payment Amount",
-      dataIndex: "paymentAmount",
+      dataIndex: "payment_amount",
       editable: isEdit,
     },
 
     {
       title: "Payment Duration",
-      dataIndex: "paymentDuration",
+      dataIndex: "payment_duration",
       editable: isEdit,
     },
 
     {
       title: "Payment Date",
-      dataIndex: "paymentDate",
+      dataIndex: "payment_date",
       render: (text, record) => {
         return (
           <div>
-            <DatePicker onChange={onChange} />
+            <DatePicker onChange={onChange} value={moment(record.payment_date)}/>
           </div>
         );
       },
     },
     {
       title: "Payment Method",
-      dataIndex: "paymentMethod",
+      dataIndex: "payment_method",
       editable: isEdit,
     },
     {
@@ -233,7 +234,7 @@ const ProjectReport = ({ isEdit, setIsEdit }) => {
     };
   });
 
-  console.log("dataSource", dataSource);
+  console.log("dataSource", contract);
 
   return (
     <div>
@@ -250,7 +251,7 @@ const ProjectReport = ({ isEdit, setIsEdit }) => {
         components={components}
         rowClassName={() => "editable-row"}
         bordered
-        dataSource={dataSource}
+        dataSource={contract?.contract}
         columns={columns}
         scroll={{
           x: 1800,

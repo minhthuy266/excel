@@ -50,14 +50,25 @@ const Sider = ({ collapsed }) => {
       </div>
       <Menu
         mode="inline"
+        theme="light"
         defaultSelectedKeys={["/dash/contract"]}
         onClick={onClick}
         selectedKeys={[current]}
         items={[
           {
-            key: "/dash/contract",
+            // key: "/dash/contract",
             icon: <HomeOutlined />,
             label: "Contract",
+            children: [
+              // {
+              //   key: "/dash/contract/1",
+              //   label: "Add Contract",
+              // },
+              {
+                key: "/dash/contract/list",
+                label: "List Contract",
+              },
+            ],
           },
 
           {

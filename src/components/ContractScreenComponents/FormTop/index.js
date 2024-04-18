@@ -1,4 +1,6 @@
 import { Col, DatePicker, Form, Input, Row, Select } from "antd";
+import { useState } from "react";
+import moment from "moment";
 const layout = {
   labelCol: {
     span: 8,
@@ -55,51 +57,69 @@ const suffixSelectorTotalWeight = (
   </Form.Item>
 );
 
-const onChange = (date, dateString) => {
-  console.log(date, dateString);
-};
+// const onChange = (date, dateString) => {
+//   console.log(date, dateString);
+// };
 
-const FormTop = ({ isEdit }) => {
+
+
+const FormTop = ({ isEdit, contract }) => {
+  console.log("first contract", contract);
+
+  const [formData, setFormData] = useState({
+    ...contract,
+    contract_date: moment('2023-12-31'), 
+
+  });
+  
+  const onChange = (date, dateString) => {
+    setFormData({
+      ...formData,
+      contract_date: moment(date),
+    });
+  };
+
   return (
     <Form
       {...layout}
       name="nest-messages"
       labelAlign="left"
+      initialValues={formData}
       onFinish={onFinish}
       validateMessages={validateMessages}
       disabled={!isEdit}
     >
       <Row gutter={24}>
         <Col span={12}>
-          <Form.Item name={["user", "projectNo"]} label="Project No">
+          <Form.Item name="project_no" label="Project No">
             <Input />
           </Form.Item>
-          <Form.Item name={["user", "projectName"]} label="Project Name">
-            <Input />
-          </Form.Item>
-
-          <Form.Item name={["user", "client"]} label="Client">
+          <Form.Item name="project_name" label="Project Name">
             <Input />
           </Form.Item>
 
-          <Form.Item name={["user", "contractAmount"]} label="Contract Amount">
+          <Form.Item name="client" label="Client">
+            <Input />
+          </Form.Item>
+
+          <Form.Item name="amount" label="Contract Amount">
             <Input addonAfter={suffixSelectorContractAmount} />
           </Form.Item>
 
-          <Form.Item name={["user", "totalWeight"]} label="Total Weight">
+          <Form.Item name="weight" label="Total Weight">
             <Input addonAfter={suffixSelectorTotalWeight} />
           </Form.Item>
-          <Form.Item name={["user", "unitPrice"]} label="Unit Price">
+          <Form.Item name="unit_price" label="Unit Price">
             <Input addonAfter={suffixSelectorTotalWeight} />
           </Form.Item>
         </Col>
 
         <Col span={12}>
-          <Form.Item name={["user", "deliveryTerm"]} label="Delivery term">
+          <Form.Item name="delivery_term" label="Delivery term">
             <Input />
           </Form.Item>
-          <Form.Item name={["user", "contractDate"]} label="Contract Date">
-            <DatePicker onChange={onChange} />
+          <Form.Item name="contract_date" label="Contract Date">
+            <DatePicker onChange={onChange}/>
           </Form.Item>
         </Col>
       </Row>

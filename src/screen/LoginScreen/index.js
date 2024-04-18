@@ -11,22 +11,22 @@ const LoginScreen = () => {
 
   const [login, { isLoading }] = useLoginMutation();
 
-  console.log("object", login);
-
   const onFinish = (values) => {
     console.log("Success:", values);
-    // login(values).then((res) => {
-    //   if (res.data) {
-    //     dispatch(
-    //       setCredentials({
-    //         user: res.data.user,
-    //         accessToken: res.data.authorisation.token,
-    //       })
-    //     );
-    //   }
-    // });
-    localStorage.setItem("currentScreen", "/dash/contract");
-    navigate("/dash/contract");
+    login(values).then((res) => {
+      if (res.data) {
+        dispatch(
+          setCredentials({
+            user: res.data.user,
+            accessToken: res.data.authorisation.token,
+          })
+        );
+
+        localStorage.setItem('accessToken', res.data.authorisation.token);
+      }
+    });
+    localStorage.setItem("currentScreen", "/dash/contract/list");
+    navigate("/dash/contract/list");
   };
 
   const onFinishFailed = (errorInfo) => {

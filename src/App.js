@@ -1,4 +1,4 @@
-// import "./index.css";
+import "./index.css";
 import { theme } from "antd";
 import DashLayout from "components/common/DashLayout";
 import Layout from "components/common/Layout";
@@ -14,6 +14,7 @@ import PaymentActualScreen from "screen/PaymentActualScreen";
 import BudgetScreen from "screen/BudgetScreen";
 import POScreen from "screen/POScreen";
 import CostControlScreen from "screen/CostControlScreen";
+import ContractListScreen from "screen/ContractScreen/ContractListScreen";
 
 function App() {
   const {
@@ -40,7 +41,9 @@ function App() {
             path="dash"
             element={<DashLayout colorBgContainer={colorBgContainer} />}
           >
-            <Route path="contract" element={<ContractScreen />}></Route>
+            <Route path="contract/:id" element={<ContractScreen />}>
+            </Route>
+              <Route path="contract/list" element={<ContractListScreen />}></Route>
             <Route path="payment-plan" element={<PaymentPlanScreen />}></Route>
             <Route
               path="payment-actual"
