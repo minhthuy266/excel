@@ -117,7 +117,7 @@ const ProjectReport = ({ isEdit, setIsEdit, contract }) => {
       render: (text, record) => {
         return (
           <div>
-            <DatePicker onChange={onChange} value={moment(record.delivery_date)} />
+            <DatePicker onChange={onChange} value={moment(record.delivery_date)}  disabled={!isEdit}/>
           </div>
         );
       },
@@ -160,10 +160,11 @@ const ProjectReport = ({ isEdit, setIsEdit, contract }) => {
       render: (text, record) => {
         return (
           <div>
-            <DatePicker onChange={onChange} value={moment(record.payment_date)}/>
+            <DatePicker onChange={onChange} value={moment(record.payment_date)} disabled={!isEdit}/>
           </div>
         );
       },
+      editable: isEdit,
     },
     {
       title: "Payment Method",
