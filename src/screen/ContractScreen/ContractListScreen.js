@@ -1,11 +1,35 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {Table, Button} from 'antd'
 import { StyledAction } from './styles'
-import { useGetContractByIdQuery, useGetContractsQuery } from 'features/contract/contractSlice'
+import { useDeleteContractMutation, useDeleteContractQuery, useGetContractByIdQuery, useGetContractsQuery } from 'features/contract/contractSlice'
 import { Link, useNavigate } from 'react-router-dom'
 
 const ContractListScreen = () => {
   const navigate = useNavigate()
+  const [id, setId] = useState(null)
+  const {data: data1, isLoading, refetch}= useDeleteContractQuery(id, {
+    onSuccess: () => {
+      console.log("Deleting success")
+      refetchList()
+    }
+  })
+  const {data: contractList, refetch: refetchList} = useGetContractsQuery()
+  const {data: contract} = useGetContractByIdQuery(1)
+
+  const handleDeleteContract = async (contractId) => {
+    try {
+      await refetch();
+      // After successfully deleting the contract, refetch the contract list
+      refetchList(id);
+    } catch (error) {
+      console.error('Error deleting contract:', error);
+    }
+  };
+
+
+  useEffect(() => {
+    handleDeleteContract()
+  }, [id, refetch]);
 
   const columns = [
     {
@@ -54,7 +78,7 @@ const ContractListScreen = () => {
       render: (_, record) => (
         <StyledAction>
           <Button onClick={() => navigate(`/dash/contract/${record.id}`)}>Xem</Button>
-          <Button onClick={() => console.log("heehehheehhe") }>Xoá</Button>
+          <Button onClick={() => setId(record.id) }>Xoá</Button>
   
         </StyledAction>
       ),
@@ -97,8 +121,7 @@ const ContractListScreen = () => {
     },
   ]
 
-  const {data: contractList} = useGetContractsQuery()
-  const {data: contract} = useGetContractByIdQuery(1)
+
 
   // console.log("-----data-----", contractList?.data)
   // console.log("-----data-----", contract)

@@ -29,10 +29,10 @@ export const contractsSlice = apiSlice.injectEndpoints({
       providesTags: (result, error, arg) => {
         if (result?.ids) {
           return [
-            { type: "User", id: "LIST" },
-            ...result.ids.map((id) => ({ type: "User", id })),
+            { type: "Contract", id: "LIST" },
+            ...result.ids.map((id) => ({ type: "Contract", id })),
           ];
-        } else return [{ type: "User", id: "LIST" }];
+        } else return [{ type: "Contract", id: "LIST" }];
       },
     }),
 
@@ -84,17 +84,17 @@ export const contractsSlice = apiSlice.injectEndpoints({
       ],
     }),
 
-    deleteUser: builder.mutation({
-      query: ({ id }) => ({
-        url: "/contracts",
-        method: "DELETE",
-        body: {
+    deleteContract: builder.query({
+      query: ( id ) => ({
+        url: "project/delete",
+        method: "GET",
+        params: {
           id,
         },
       }),
       invalidatesTags: (result, error, arg) => [
         {
-          type: "User",
+          type: "Contract",
           id: arg.id,
         },
       ],
@@ -107,7 +107,7 @@ export const {
   useGetContractByIdQuery,
   useAddNewUserMutation,
   useUpdateUserMutation,
-  useDeleteUserMutation,
+useDeleteContractQuery,
 } = contractsSlice;
 
 // Returns the query result object
