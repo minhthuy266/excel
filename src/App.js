@@ -41,9 +41,12 @@ function App() {
             path="dash"
             element={<DashLayout colorBgContainer={colorBgContainer} />}
           >
-            <Route path="contract/:id" element={<ContractScreen />}>
-            </Route>
-              <Route path="contract/list" element={<ContractListScreen />}></Route>
+            <Route path="contract/create" element={<ContractScreen />}></Route>
+            <Route path="contract/:id" element={<ContractScreen />}></Route>
+            <Route
+              path="contract/list"
+              element={<ContractListScreen />}
+            ></Route>
             <Route path="payment-plan" element={<PaymentPlanScreen />}></Route>
             <Route
               path="payment-actual"

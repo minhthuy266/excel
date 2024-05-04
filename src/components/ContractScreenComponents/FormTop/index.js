@@ -1,6 +1,13 @@
-import { Col, DatePicker, Form, Input, Row, Select } from "antd";
+import { Button, Col, DatePicker, Form, Input, Row, Select } from "antd";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import {
+  useAddNewProjectMutation,
+  useGetProjectByIdQuery,
+  useUpdateProjectMutation,
+} from "../../../features/contract/projectSlice";
 import { useState } from "react";
-import moment from "moment";
+import dayjs from "dayjs";
+
 const layout = {
   labelCol: {
     span: 8,
@@ -22,10 +29,6 @@ const validateMessages = {
   },
 };
 /* eslint-enable no-template-curly-in-string */
-
-const onFinish = (values) => {
-  console.log(values);
-};
 
 const { Option } = Select;
 
@@ -57,73 +60,112 @@ const suffixSelectorTotalWeight = (
   </Form.Item>
 );
 
-// const onChange = (date, dateString) => {
-//   console.log(date, dateString);
-// };
-
-
-
-const FormTop = ({ isEdit, contract }) => {
+const FormTop = ({ isEdit, setIsEdit, data, setData }) => {
+  const param = useParams();
+  const { data: contract, isLoading } = useGetProjectByIdQuery(param.id);
   console.log("first contract", contract);
+  const location = useLocation();
+  const isCreateContractRoute = location.pathname.includes("create");
+  const [contractDate, setContractDate] = useState(
+    isCreateContractRoute ? null : contract?.contract_date
+  );
+  const [form] = Form.useForm();
 
-  const [formData, setFormData] = useState({
-    ...contract,
-    contract_date: moment('2023-12-31'), 
-
-  });
-  
   const onChange = (date, dateString) => {
-    setFormData({
-      ...formData,
-      contract_date: moment(date),
-    });
+    console.log(date, dateString);
+    setContractDate(dateString);
   };
 
+  const navigate = useNavigate();
+  const [addContract] = useAddNewProjectMutation();
+  const [updateContract] = useUpdateProjectMutation();
+  const onFinish = (value) => {
+    setIsEdit(false);
+    setIsEdit(true); 
+
+    if (isCreateContractRoute) {
+      addContract({
+        ...value,
+        contract_date: contractDate,
+        data: data?.map(({ key, ...rest }) => rest),
+      }).then((res) => {
+        console.log("res", res.data.data.id);
+        navigate(`/dash/contract/${res.data.data.id}`);
+      });
+    } else {
+      updateContract({
+        ...value,
+        id: param.id,
+        data: data.map(({ key, ...rest }) => rest),
+        contract_date: contractDate,
+      });
+    }
+  };
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <Form
-      {...layout}
-      name="nest-messages"
-      labelAlign="left"
-      initialValues={formData}
-      onFinish={onFinish}
-      validateMessages={validateMessages}
-      disabled={!isEdit}
-    >
-      <Row gutter={24}>
-        <Col span={12}>
-          <Form.Item name="project_no" label="Project No">
-            <Input />
+    <>
+      <Form
+        {...layout}
+        form={form}
+        name="nest-messages"
+        labelAlign="left"
+        initialValues={{
+          ...contract,
+          contract_date: isCreateContractRoute
+            ? null
+            : dayjs(contractDate, "YYYY-MM-DD"),
+        }}
+        onFinish={onFinish}
+        validateMessages={validateMessages}
+        disabled={!isEdit}
+      >
+        <div className="flex justify-end">
+          <Form.Item className="flex mr-2">
+            <Button htmlType="submit">Lưu</Button>
           </Form.Item>
-          <Form.Item name="project_name" label="Project Name">
-            <Input />
-          </Form.Item>
+          <Button onClick={() => form.resetFields()}>Huỷ</Button>
+        </div>
 
-          <Form.Item name="client" label="Client">
-            <Input />
-          </Form.Item>
+        <Row gutter={24}>
+          <Col span={12}>
+            <Form.Item name="project_no" label="Project No">
+              <Input />
+            </Form.Item>
+            <Form.Item name="project_name" label="Project Name">
+              <Input />
+            </Form.Item>
 
-          <Form.Item name="amount" label="Contract Amount">
-            <Input addonAfter={suffixSelectorContractAmount} />
-          </Form.Item>
+            <Form.Item name="client" label="Client">
+              <Input />
+            </Form.Item>
 
-          <Form.Item name="weight" label="Total Weight">
-            <Input addonAfter={suffixSelectorTotalWeight} />
-          </Form.Item>
-          <Form.Item name="unit_price" label="Unit Price">
-            <Input addonAfter={suffixSelectorTotalWeight} />
-          </Form.Item>
-        </Col>
+            <Form.Item name="amount" label="Contract Amount">
+              <Input addonAfter={suffixSelectorContractAmount} />
+            </Form.Item>
 
-        <Col span={12}>
-          <Form.Item name="delivery_term" label="Delivery term">
-            <Input />
-          </Form.Item>
-          <Form.Item name="contract_date" label="Contract Date">
-            <DatePicker onChange={onChange}/>
-          </Form.Item>
-        </Col>
-      </Row>
-    </Form>
+            <Form.Item name="weight" label="Total Weight">
+              <Input addonAfter={suffixSelectorTotalWeight} />
+            </Form.Item>
+            <Form.Item name="unit_price" label="Unit Price">
+              <Input addonAfter={suffixSelectorTotalWeight} />
+            </Form.Item>
+          </Col>
+
+          <Col span={12}>
+            <Form.Item name="delivery_term" label="Delivery term">
+              <Input />
+            </Form.Item>
+
+            <Form.Item name="contract_date" label="Contract Date">
+              <DatePicker onChange={onChange} />
+            </Form.Item>
+          </Col>
+        </Row>
+      </Form>
+    </>
   );
 };
 

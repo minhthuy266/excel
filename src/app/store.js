@@ -1,13 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "../features/auth/authSlice";
-import contractsReducer from "../features/contract/contractSlice";
+import projectsReducer from "../features/contract/projectSlice";
 
 import { apiSlice } from "./api/apiSlice";
 
 export const store = configureStore({
   reducer: {
     [apiSlice.reducerPath]: apiSlice.reducer,
-    contracts: contractsReducer,
+    projects: projectsReducer,
     auth: authReducer,
   },
 
