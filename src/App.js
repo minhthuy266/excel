@@ -15,6 +15,9 @@ import BudgetScreen from "screen/BudgetScreen";
 import POScreen from "screen/POScreen";
 import CostControlScreen from "screen/CostControlScreen";
 import ContractListScreen from "screen/ContractScreen/ContractListScreen";
+import BudgetListScreen from "screen/BudgetScreen/BudgetListScreen";
+import POListScreen from "screen/POScreen/POListScreen";
+import CostControlListScreen from "screen/CostControlScreen/CostControlListScreen";
 
 function App() {
   const {
@@ -53,8 +56,15 @@ function App() {
               element={<PaymentActualScreen />}
             ></Route>
             <Route path="budget" element={<BudgetScreen />}></Route>
+            <Route path="budget-list" element={<BudgetListScreen />}></Route>
+            <Route path="budget-list/:id" element={<BudgetScreen />}></Route>
+
             <Route path="po" element={<POScreen />}></Route>
+            <Route path="po-list" element={<POListScreen />}></Route>
+            <Route path="po/:id" element={<POScreen />}></Route>
             <Route path="cost-control" element={<CostControlScreen />}></Route>
+            <Route path="cost-control-list" element={<CostControlListScreen />}></Route>
+            <Route path="cost-control/:id" element={<CostControlScreen />}></Route>
             <Route path="role" element={<RoleScreen />}></Route>
           </Route>
         </Route>

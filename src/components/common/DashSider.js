@@ -83,23 +83,23 @@ const Sider = ({ collapsed }) => {
             label: "Payment Actual",
           },
 
-          {
-            key: "/dash/budget",
-            icon: <BlockOutlined />,
-            label: "Budget",
-          },
+          // {
+          //   key: "/dash/budget",
+          //   icon: <BlockOutlined />,
+          //   label: "Budget",
+          // },
 
-          {
-            key: "/dash/po",
-            icon: <HomeOutlined />,
-            label: "PO",
-          },
+          // {
+          //   key: "/dash/po",
+          //   icon: <HomeOutlined />,
+          //   label: "PO",
+          // },
 
-          {
-            key: "/dash/cost-control",
-            icon: <ControlOutlined />,
-            label: "Cost Control",
-          },
+          // {
+          //   key: "/dash/cost-control",
+          //   icon: <ControlOutlined />,
+          //   label: "Cost Control",
+          // },
 
           {
             key: "/dash/role",

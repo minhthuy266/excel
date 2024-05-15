@@ -81,7 +81,7 @@ const FormTop = ({ isEdit, setIsEdit, data, setData }) => {
   const [updateContract] = useUpdateProjectMutation();
   const onFinish = (value) => {
     setIsEdit(false);
-    setIsEdit(true); 
+    setIsEdit(true);
 
     if (isCreateContractRoute) {
       addContract({
@@ -162,6 +162,24 @@ const FormTop = ({ isEdit, setIsEdit, data, setData }) => {
             <Form.Item name="contract_date" label="Contract Date">
               <DatePicker onChange={onChange} />
             </Form.Item>
+
+            <div className="mt-32">
+              <Button
+                onClick={() => navigate(`/dash/budget-list?project_no=${param.id}`)}
+                className="mr-4"
+              >
+                Budget
+              </Button>
+              <Button
+                onClick={() => navigate("/dash/po-list")}
+                className="mr-4"
+              >
+                PO
+              </Button>
+              <Button onClick={() => navigate("/dash/cost-control-list")}>
+                Cost Control
+              </Button>
+            </div>
           </Col>
         </Row>
       </Form>
