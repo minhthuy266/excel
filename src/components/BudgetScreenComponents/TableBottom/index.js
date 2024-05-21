@@ -1,5 +1,7 @@
 import { Button, Form, Input, Popconfirm, Table } from "antd";
+import { useGetBudgetByIdQuery } from "features/budget/budgetSlice";
 import React, { useContext, useEffect, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
 const EditableContext = React.createContext(null);
 const EditableRow = ({ index, ...props }) => {
   const [form] = Form.useForm();
@@ -79,27 +81,34 @@ const EditableCell = ({
   return <td {...restProps}>{childNode}</td>;
 };
 
-const TableBottom = ({ isEdit, setIsEdit }) => {
+const TableBottom = ({ isEdit, setIsEdit, setDataTable, dataTable }) => {
+  const router = useLocation();
+  console.log("router", router.pathname);
+  const {data: budgetDetail} = useGetBudgetByIdQuery(router.pathname.split("/")[3])
+  const isCreateBudgetRoute = router.pathname.includes("create");
+
+  console.log("budgetDetail", budgetDetail)
+
   const [dataSource, setDataSource] = useState([
     {
       key: 0,
       item: "Item 1",
-      workId: "123",
+      work_id: "123",
       unit: "Unit 1",
       weight: "1",
-      unitPrice: "100",
+      unit_price: "100",
       amount: "100",
-      costId: "123",
+      cost_id: "123",
     },
     {
       key: 1,
       item: "Item 2",
-      workId: "456",
+      work_id: "456",
       unit: "Unit 2",
       weight: "2",
-      unitPrice: "200",
+      unit_price: "200",
       amount: "400",
-      costId: "456",
+      cost_id: "456",
     },
   ]);
   const [count, setCount] = useState(2);
@@ -116,7 +125,7 @@ const TableBottom = ({ isEdit, setIsEdit }) => {
     },
     {
       title: "WORK ID",
-      dataIndex: "workId",
+      dataIndex: "work_id",
       editable: isEdit,
     },
     {
@@ -131,7 +140,7 @@ const TableBottom = ({ isEdit, setIsEdit }) => {
     },
     {
       title: "Unit Price",
-      dataIndex: "unitPrice",
+      dataIndex: "unit_price",
       editable: isEdit,
     },
     {
@@ -141,7 +150,7 @@ const TableBottom = ({ isEdit, setIsEdit }) => {
     },
     {
       title: "Cost ID",
-      dataIndex: "costId",
+      dataIndex: "cost_id",
       editable: isEdit,
     },
     {
@@ -153,7 +162,10 @@ const TableBottom = ({ isEdit, setIsEdit }) => {
             title="Sure to delete?"
             onConfirm={() => handleDelete(record.key)}
           >
-            <a>Delete</a>
+          {
+            isCreateBudgetRoute && <a>Delete</a>
+          }
+            
           </Popconfirm>
         ) : null,
       fixed: "right",
@@ -163,12 +175,12 @@ const TableBottom = ({ isEdit, setIsEdit }) => {
     const newData = {
       key: count,
       item: "",
-      workId: "",
+      work_id: "",
       unit: "",
       weight: "",
-      unitPrice: "",
+      unit_price: "",
       amount: "",
-      costId: "",
+      cost_id: "",
     };
     setDataSource([...dataSource, newData]);
     setCount(count + 1);
@@ -207,9 +219,17 @@ const TableBottom = ({ isEdit, setIsEdit }) => {
 
   console.log("dataSource", dataSource);
 
+  useEffect(() => {
+    setDataTable(dataSource);
+  }, [dataSource, setDataTable]);
+
+ 
+
   return (
     <div>
-      <Button
+    {
+      isCreateBudgetRoute && (
+        <Button
         onClick={handleAdd}
         type="primary"
         style={{
@@ -218,11 +238,14 @@ const TableBottom = ({ isEdit, setIsEdit }) => {
       >
         Add a row
       </Button>
+      )
+    }
+     
       <Table
         components={components}
         rowClassName={() => "editable-row"}
         bordered
-        dataSource={dataSource}
+        dataSource={!isCreateBudgetRoute ? [budgetDetail] :  dataSource}
         columns={columns}
         scroll={{
           x: 1200,

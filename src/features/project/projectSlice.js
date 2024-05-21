@@ -11,7 +11,6 @@ export const projectsSlice = apiSlice.injectEndpoints({
     getProjects: builder.query({
       query: () => "/project/index",
       transformResponse: (response) => {
-        console.log("response", response.data);
         return response.data;
       },
       providesTags: (result, error, arg) => {
@@ -77,12 +76,6 @@ export const projectsSlice = apiSlice.injectEndpoints({
           id,
         },
       }),
-      // invalidatesTags: (result, error, arg) => [
-      //   {
-      //     type: "Project",
-      //     id: arg.id,
-      //   },
-      // ],
     }),
 
     getContractList: builder.query({
@@ -93,13 +86,6 @@ export const projectsSlice = apiSlice.injectEndpoints({
           project_id,
         },
       }),
-      // providesTags: (result) =>
-      //   result
-      //     ? [
-      //         ...result.map(({ id }) => ({ type: "Contracts", id })),
-      //         { type: "Contracts", id: "LIST" },
-      //       ]
-      //     : [{ type: "Contracts", id: "LIST" }],
     }),
 
     deleteContract: builder.query({
@@ -110,12 +96,6 @@ export const projectsSlice = apiSlice.injectEndpoints({
           id,
         },
       }),
-      // invalidatesTags: (result, error, arg) => [
-      //   {
-      //     type: "Project",
-      //     id: arg.id,
-      //   },
-      // ],
     }),
   }),
 });

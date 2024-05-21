@@ -1,6 +1,6 @@
 import { Button, DatePicker, Form, Input, Popconfirm, Table } from "antd";
 import dayjs from "dayjs";
-import { useDeleteContractQuery } from "features/contract/projectSlice";
+import { useDeleteContractQuery } from "features/project/projectSlice";
 import { debounce } from "lodash";
 import moment from "moment";
 import React, { useContext, useEffect, useRef, useState } from "react";

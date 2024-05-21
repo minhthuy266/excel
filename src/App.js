@@ -58,6 +58,7 @@ function App() {
             <Route path="budget" element={<BudgetScreen />}></Route>
             <Route path="budget-list" element={<BudgetListScreen />}></Route>
             <Route path="budget-list/:id" element={<BudgetScreen />}></Route>
+            <Route path="budget/create" element={<BudgetScreen />}></Route>
 
             <Route path="po" element={<POScreen />}></Route>
             <Route path="po-list" element={<POListScreen />}></Route>

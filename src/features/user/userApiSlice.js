@@ -16,8 +16,6 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 
       transformResponse: (responseData) => {
         const loadedUsers = responseData?.data;
-        console.log("object", responseData)
-
         return usersAdapter.setAll(initialState, loadedUsers);
       },
       providesTags: (result, error, arg) => {

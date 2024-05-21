@@ -4,7 +4,7 @@ import {
   useAddNewProjectMutation,
   useGetProjectByIdQuery,
   useUpdateProjectMutation,
-} from "../../../features/contract/projectSlice";
+} from "../../../features/project/projectSlice";
 import { useState } from "react";
 import dayjs from "dayjs";
 

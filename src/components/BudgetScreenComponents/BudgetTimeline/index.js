@@ -2,18 +2,13 @@ import React from "react";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, DatePicker, Form, Input, Space } from "antd";
 
-
 const BudgetTimeline = () => {
   const onChange = (date, dateString) => {
     console.log(date, dateString);
   };
 
-
-
   const onFinish = (values) => {
     console.log("Received values of form:", values);
-
-   
   };
 
   return (
@@ -27,7 +22,7 @@ const BudgetTimeline = () => {
         }}
         autoComplete="off"
       >
-      <div className="flex justify-end">
+        <div className="flex justify-end">
           <Form.Item className="flex mr-2">
             <Button htmlType="submit">Lưu</Button>
           </Form.Item>

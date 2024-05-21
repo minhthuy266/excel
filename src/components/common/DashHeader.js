@@ -1,26 +1,15 @@
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
-import { Avatar, Breadcrumb, Dropdown, Layout } from "antd";
+import { Avatar, Dropdown, Layout } from "antd";
 import { selectCurrentUser } from "features/auth/authSlice";
 import variables from "globalStyles/variables.scss";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router";
-import { StyledBreadcrumbs, StyledHeaderWrapper } from "./styles";
+import { StyledHeaderWrapper } from "./styles";
 import "./styles.scss";
 
 const DashHeader = ({ collapsed, colorBgContainer, setCollapsed }) => {
-  const location = useLocation();
-  const [, b, c, d] = location?.pathname?.split("/");
-  const [breadcrumb2, setBreadcrumb2] = useState("");
-  const [breadcrumb3, setBreadcrumb3] = useState("");
-
   const { t } = useTranslation(["common"]);
-
-  useEffect(() => {
-    setBreadcrumb2(c);
-    setBreadcrumb3(d);
-  }, [b, c, d]);
 
   const items = [
     {
@@ -57,17 +46,6 @@ const DashHeader = ({ collapsed, colorBgContainer, setCollapsed }) => {
               onClick: () => setCollapsed(!collapsed),
             }
           )}
-
-          {/* <StyledBreadcrumbs>
-            <Breadcrumb>
-              <Breadcrumb.Item>{t("header.breadcrumbs.item1")}</Breadcrumb.Item>
-              <Breadcrumb.Item>{t("header.breadcrumbs.item2")}</Breadcrumb.Item>
-              <Breadcrumb.Item>{t(`sidebar.${breadcrumb2}`)}</Breadcrumb.Item>
-              {breadcrumb3 && (
-                <Breadcrumb.Item>{t(`sidebar.${breadcrumb3}`)}</Breadcrumb.Item>
-              )}
-            </Breadcrumb>
-          </StyledBreadcrumbs> */}
         </div>
 
         <div>

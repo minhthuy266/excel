@@ -9,7 +9,7 @@ const LoginScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [login, { isLoading }] = useLoginMutation();
+  const [login] = useLoginMutation();
 
   const onFinish = (values) => {
     console.log("Success:", values);
@@ -22,7 +22,7 @@ const LoginScreen = () => {
           })
         );
 
-        localStorage.setItem('accessToken', res.data.authorisation.token);
+        localStorage.setItem("accessToken", res.data.authorisation.token);
       }
     });
     localStorage.setItem("currentScreen", "/dash/contract/list");

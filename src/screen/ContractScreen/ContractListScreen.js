@@ -2,7 +2,7 @@ import { Button, Table } from "antd";
 import {
   useDeleteProjectQuery,
   useGetProjectsQuery,
-} from "features/contract/projectSlice";
+} from "features/project/projectSlice";
 import { useCallback, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { StyledAction } from "./styles";

@@ -2,6 +2,7 @@ import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Col, DatePicker, Form, Input, Row, Select, Space } from "antd";
 import dayjs from "dayjs";
 import { useAddNewBudgetMutation } from "features/budget/budgetSlice";
+import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 const layout = {
   labelCol: {
@@ -49,37 +50,63 @@ const onChange = (date, dateString) => {
 
 
 
-const FormTop = ({ isEdit }) => {
+const FormTop = ({ isEdit, dataTable, budgetDetail }) => {
   const [form] = Form.useForm();
 
   const [addNewBudget] = useAddNewBudgetMutation();
   const location = useLocation();
 
+console.log("thanhbidi", dataTable)
 
+//remove key  key from dataTable
+
+
+console.log("isEditisEdit", isEdit)
 
   const onFinish = (values) => {
     console.log({
       project_id: location.search.slice(12, location.search.length),
-      ...values,
-      budget_date: values.budget_date.map(function (item) {
+      budget_date: values.budget_date ? values.budget_date.map(function (item) {
         return {
           ...item,
           date: dayjs(item.date).format("YYYY-MM-DD"),
-        };
-      }),
+        } 
+      }) : [],
     });
+
+    console.log("VL", values)
 
     addNewBudget({
       project_id: location.search.slice(12, location.search.length),
-      ...values,
-      budget_date: values.budget_date.map(function (item) {
+      data: dataTable,
+      budget_date: values?.budget_date?.map(function (item) {
         return {
           ...item,
           date: dayjs(item.date).format("YYYY-MM-DD"),
         };
-      }),
+      }) || [],
     })
   };
+
+  useEffect(() => {
+    if (budgetDetail) {
+      form.setFieldsValue({
+        project_no: budgetDetail?.project?.project_no,
+        project_name: budgetDetail?.project?.project_name,
+        client: budgetDetail?.project?.client,
+        contract_amount: budgetDetail?.project?.contract_amount,
+        budget_date: budgetDetail?.project?.budget_date?.map(function (item) {
+          return {
+            date: dayjs(item.date),
+            item: item.item,
+            amount: item.amount,
+          };
+        }) || [],
+      }) ;
+    }
+  }, [budgetDetail, form]);
+
+  console.log("budgetDetail?.projectbudgetDetail?.project", budgetDetail?.project)
 
   return (
     <>
@@ -87,16 +114,6 @@ const FormTop = ({ isEdit }) => {
         {...layout}
         form={form}
         name="nest-messages"
-        initialValues={
-          isEdit
-            ? {
-                project_no: "123",
-                project_name: "Project Name",
-                client: "Client",
-                contract_amount: "1000000",
-              }
-            : {}
-        }
         labelAlign="left"
         onFinish={onFinish}
         validateMessages={validateMessages}
@@ -183,7 +200,7 @@ const FormTop = ({ isEdit }) => {
                   </Form.Item>
                   <Form.Item
                     {...restField}
-                    name={[name, "budget"]}
+                    name={[name, "amount"]}
                     rules={[
                       {
                         required: true,

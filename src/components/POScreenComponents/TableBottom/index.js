@@ -42,7 +42,6 @@ const EditableCell = ({
         ...record,
         ...values,
       });
-      console.log("ooooo", values);
     } catch (errInfo) {
       console.log("Save failed:", errInfo);
     }
@@ -214,8 +213,6 @@ const TableBottom = ({ isEdit, setIsEdit }) => {
       }),
     };
   });
-
-  console.log("dataSource", dataSource);
 
   return (
     <div>

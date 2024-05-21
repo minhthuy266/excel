@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "../features/auth/authSlice";
-import projectsReducer from "../features/contract/projectSlice";
+import projectsReducer from "../features/project/projectSlice";
 
 import { apiSlice } from "./api/apiSlice";
 import { budgetsSlice } from "features/budget/budgetSlice";

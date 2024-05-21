@@ -1,7 +1,6 @@
-import {Button, Space, Table, Tag} from "antd"
-import {StyledAction} from "./styles"
-import AddUserModal from "components/RoleScreenComponents/AddUserModal"
-import { useGetUsersQuery } from "features/user/userApiSlice"
+import { Button, Table, Tag } from "antd";
+import AddUserModal from "components/RoleScreenComponents/AddUserModal";
+import { StyledAction } from "./styles";
 
 const columns = [
   {
@@ -33,12 +32,12 @@ const columns = [
     title: "Active",
     key: "active",
     dataIndex: "active",
-    render: (_, {active}) => (
+    render: (_, { active }) => (
       <>
         {active ? (
-          <Tag color='green'>Active</Tag>
+          <Tag color="green">Active</Tag>
         ) : (
-          <Tag color='volcano'>Inactive</Tag>
+          <Tag color="volcano">Inactive</Tag>
         )}
       </>
     ),
@@ -72,7 +71,7 @@ const columns = [
       </StyledAction>
     ),
   },
-]
+];
 
 const userList = [
   {
@@ -111,33 +110,15 @@ const userList = [
     created_at: "2023-10-31T14:50:28.000000Z",
     updated_at: "2023-10-31T15:16:00.000000Z",
   },
-]
-
-
-
+];
 
 const RoleScreen = () => {
-  const {
-    data: users,
-    isLoading,
-    isSuccess,
-    isError,
-    error,
-  } = useGetUsersQuery("usersList", {
-    pollingInterval: 60000,
-    refetchOnFocus: true,
-    refetchOnMountOrArgChange: true,
-  })
-
-  console.log("=====users", users)
-
   return (
     <>
- 
       <AddUserModal />
       <Table columns={columns} dataSource={userList} />
     </>
-  )
-}
+  );
+};
 
-export default RoleScreen
+export default RoleScreen;
