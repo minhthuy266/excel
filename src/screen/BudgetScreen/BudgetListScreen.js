@@ -83,6 +83,7 @@ const BudgetListScreen = () => {
         </Button>
       </div>
       <Table
+          rowKey={(record) => record.id}
         bordered
         dataSource={data?.data}
         columns={columns}

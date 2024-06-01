@@ -78,30 +78,17 @@ const EditableCell = ({
   return <td {...restProps}>{childNode}</td>;
 };
 
-const TableBottom = ({ isEdit, setIsEdit }) => {
-  const [dataSource, setDataSource] = useState([
-    {
-      key: 0,
-      item: "Item 1",
-      workId: "123",
-      unit: "Unit 1",
-      weight: "1",
-      unitPrice: "100",
-      amount: "100",
-      costId: "123",
-    },
-    {
-      key: 1,
-      item: "Item 2",
-      workId: "456",
-      unit: "Unit 2",
-      weight: "2",
-      unitPrice: "200",
-      amount: "400",
-      costId: "456",
-    },
-  ]);
-  const [count, setCount] = useState(2);
+const TableBottom = ({ isEdit, dataSourceParent, setDataSourceParent }) => {
+  const [dataSource, setDataSource] = useState(dataSourceParent);
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    setDataSourceParent(dataSource)
+  }, [dataSource])
+
+  useEffect(() => {
+    setDataSource(dataSourceParent)
+  }, [dataSourceParent])
+
   const handleDelete = (key) => {
     const newData = dataSource.filter((item) => item.key !== key);
     setDataSource(newData);
@@ -115,7 +102,7 @@ const TableBottom = ({ isEdit, setIsEdit }) => {
     },
     {
       title: "WORK ID",
-      dataIndex: "workId",
+      dataIndex: "work_id",
       editable: isEdit,
     },
     {
@@ -130,7 +117,7 @@ const TableBottom = ({ isEdit, setIsEdit }) => {
     },
     {
       title: "Unit Price",
-      dataIndex: "unitPrice",
+      dataIndex: "unit_price",
       editable: isEdit,
     },
     {
@@ -140,17 +127,17 @@ const TableBottom = ({ isEdit, setIsEdit }) => {
     },
     {
       title: "VAT",
-      dataIndex: "vat",
+      dataIndex: "tax",
       editable: isEdit,
     },
     {
       title: "Amount (Incl TAX)",
-      dataIndex: "amountInclTAX",
+      dataIndex: "tax_price",
       editable: isEdit,
     },
     {
       title: "Cost ID",
-      dataIndex: "costId",
+      dataIndex: "cost_id",
       editable: isEdit,
     },
     {
@@ -171,15 +158,23 @@ const TableBottom = ({ isEdit, setIsEdit }) => {
   const handleAdd = () => {
     const newData = {
       key: count,
+      id: "",
       item: "",
-      workId: "",
+      work_id: "",
       unit: "",
       weight: "",
-      unitPrice: "",
+      unit_price: "",
       amount: "",
-      costId: "",
+      tax: "",
+      tax_price: "",
+      cost_id: "",
     };
-    setDataSource([...dataSource, newData]);
+    if (typeof dataSource == 'undefined') {
+      setDataSource([newData]);
+    } else {
+      setDataSource([...dataSource, newData]);
+    }
+
     setCount(count + 1);
   };
   const handleSave = (row) => {
@@ -216,6 +211,7 @@ const TableBottom = ({ isEdit, setIsEdit }) => {
 
   return (
     <div>
+      
       <Button
         onClick={handleAdd}
         type="primary"
@@ -225,6 +221,8 @@ const TableBottom = ({ isEdit, setIsEdit }) => {
       >
         Add a row
       </Button>
+
+
       <Table
         components={components}
         rowClassName={() => "editable-row"}

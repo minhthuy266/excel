@@ -8,6 +8,9 @@ export const authApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: { ...credential },
       }),
+      transformResponse: (response) => {
+        return response;
+      },
     }),
   }),
 });

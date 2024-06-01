@@ -18,6 +18,8 @@ import ContractListScreen from "screen/ContractScreen/ContractListScreen";
 import BudgetListScreen from "screen/BudgetScreen/BudgetListScreen";
 import POListScreen from "screen/POScreen/POListScreen";
 import CostControlListScreen from "screen/CostControlScreen/CostControlListScreen";
+import POCreateScreen from "screen/POScreen/create";
+import CostControlCreateScreen from "./screen/CostControlScreen/create";
 
 function App() {
   const {
@@ -41,19 +43,19 @@ function App() {
         {/* Protected routes */}
         <Route element={<RequireAuth />}>
           <Route
-            path="dash"
-            element={<DashLayout colorBgContainer={colorBgContainer} />}
+              path="dash"
+              element={<DashLayout colorBgContainer={colorBgContainer} />}
           >
             <Route path="contract/create" element={<ContractScreen />}></Route>
             <Route path="contract/:id" element={<ContractScreen />}></Route>
             <Route
-              path="contract/list"
-              element={<ContractListScreen />}
+                path="contract/list"
+                element={<ContractListScreen />}
             ></Route>
             <Route path="payment-plan" element={<PaymentPlanScreen />}></Route>
             <Route
-              path="payment-actual"
-              element={<PaymentActualScreen />}
+                path="payment-actual"
+                element={<PaymentActualScreen />}
             ></Route>
             <Route path="budget" element={<BudgetScreen />}></Route>
             <Route path="budget-list" element={<BudgetListScreen />}></Route>
@@ -63,9 +65,12 @@ function App() {
             <Route path="po" element={<POScreen />}></Route>
             <Route path="po-list" element={<POListScreen />}></Route>
             <Route path="po/:id" element={<POScreen />}></Route>
+            <Route path="po/create" element={<POCreateScreen />}></Route>
+
             <Route path="cost-control" element={<CostControlScreen />}></Route>
             <Route path="cost-control-list" element={<CostControlListScreen />}></Route>
             <Route path="cost-control/:id" element={<CostControlScreen />}></Route>
+            <Route path="cost-control/create" element={<CostControlCreateScreen />}></Route>
             <Route path="role" element={<RoleScreen />}></Route>
           </Route>
         </Route>

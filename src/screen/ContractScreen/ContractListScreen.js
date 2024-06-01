@@ -107,7 +107,7 @@ const ContractListScreen = () => {
         </Button>
       </div>
 
-      <Table columns={columns} dataSource={contractList?.data} />
+      <Table rowKey={(record) => record.id} columns={columns} dataSource={contractList?.data} />
     </>
   );
 };
