@@ -4,29 +4,33 @@ import { setCredentials } from "features/auth/authSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { LoginScreenWrapper } from "./styles";
+import {useState} from "react";
+import {StyledMessageFailed} from "../../globalStyles/styles";
 
 const LoginScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const [message, setMessage] = useState();
   const [login] = useLoginMutation();
 
   const onFinish = (values) => {
-    console.log("Success:", values);
     login(values).then((res) => {
-      if (res.data) {
+      if (typeof res.data === 'undefined') {
+          setMessage('Tài khoản và mật khẩu không chính xác')
+      } else {
         dispatch(
-          setCredentials({
-            user: res.data.user,
-            accessToken: res.data.authorisation.token,
-          })
+            setCredentials({
+              user: res.data.user,
+              accessToken: res.data.authorisation.token,
+            })
         );
 
         localStorage.setItem("accessToken", res.data.authorisation.token);
+        localStorage.setItem("currentScreen", "/dash/contract/list");
+        navigate("/dash/contract/list");
       }
     });
-    localStorage.setItem("currentScreen", "/dash/contract/list");
-    navigate("/dash/contract/list");
+
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -53,6 +57,9 @@ const LoginScreen = () => {
         onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
+          {
+              message ? <StyledMessageFailed>{message}</StyledMessageFailed> : null
+          }
         <Form.Item
           label="Username"
           name="username"

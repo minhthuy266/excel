@@ -165,19 +165,25 @@ const FormTop = ({ isEdit, setIsEdit, data, setData }) => {
 
             <div className="mt-32">
               <Button
-                onClick={() => navigate(`/dash/budget-list?project_no=${param.id}`)}
-                className="mr-4"
+                  onClick={() => navigate(`/dash/budget-list?project_no=${param.id}`)}
+                  className="mr-4"
               >
                 Budget
               </Button>
               <Button
-                onClick={() => navigate("/dash/po-list")}
-                className="mr-4"
+                  onClick={() => navigate(`/dash/po-list?project_no=${param.id}`)}
+                  className="mr-4"
               >
                 PO
               </Button>
-              <Button onClick={() => navigate("/dash/cost-control-list")}>
+              <Button onClick={() => navigate(`/dash/cost-control-list?project_no=${param.id}`)}>
                 Cost Control
+              </Button>
+              <Button onClick={() => navigate("/dash/payment-plan")}>
+                Payment Plan
+              </Button>
+              <Button onClick={() => navigate("/dash/payment-actual")}>
+                Payment Actual
               </Button>
             </div>
           </Col>

@@ -1,11 +1,13 @@
 import { Button, Table } from "antd";
 import { useGetCostControlsQuery } from "features/costControl/costControlSlice";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import {useNavigate, useSearchParams} from "react-router-dom";
 
 const CostControlListScreen = () => {
   const navigate = useNavigate();
   const { data } = useGetCostControlsQuery();
+  const [searchParams] = useSearchParams();
+  const idProject = (searchParams.get("project_no"))
 
   const columns = [
     {
@@ -80,9 +82,14 @@ const CostControlListScreen = () => {
   ];
 
   return (
-    <div>
-      <Table columns={columns} dataSource={data?.data} />
-    </div>
+      <div>
+        <div className="flex justify-end">
+          <Button onClick={() => navigate(`/dash/cost-control/create?project_no=${idProject}`)}>
+            Thêm Cost
+          </Button>
+        </div>
+        <Table rowKey={(record) => record.id} columns={columns} dataSource={data?.data}/>
+      </div>
   );
 };
 

@@ -56,13 +56,6 @@ const FormTop = ({ isEdit, dataTable, budgetDetail }) => {
   const [addNewBudget] = useAddNewBudgetMutation();
   const location = useLocation();
 
-console.log("thanhbidi", dataTable)
-
-//remove key  key from dataTable
-
-
-console.log("isEditisEdit", isEdit)
-
   const onFinish = (values) => {
     console.log({
       project_id: location.search.slice(12, location.search.length),
