@@ -13,7 +13,7 @@ const BudgetScreen = () => {
   const { data: budgetDetail } = useGetBudgetByIdQuery(
     router.pathname.split("/")[3]
   );
-
+console.log('budgetDetail', budgetDetail)
   useEffect(() => {
     if (budgetDetail) {
       setDataTable(budgetDetail?.data);

@@ -81,37 +81,24 @@ const EditableCell = ({
   return <td {...restProps}>{childNode}</td>;
 };
 
-const TableBottom = ({ isEdit, setIsEdit, setDataTable, dataTable }) => {
+const TableBottom = ({ isEdit, setDataTable, dataTable }) => {
   const router = useLocation();
-  console.log("router", router.pathname);
   const {data: budgetDetail} = useGetBudgetByIdQuery(router.pathname.split("/")[3])
   const isCreateBudgetRoute = router.pathname.includes("create");
 
   console.log("budgetDetail", budgetDetail)
 
-  const [dataSource, setDataSource] = useState([
-    {
-      key: 0,
-      item: "Item 1",
-      work_id: "123",
-      unit: "Unit 1",
-      weight: "1",
-      unit_price: "100",
-      amount: "100",
-      cost_id: "123",
-    },
-    {
-      key: 1,
-      item: "Item 2",
-      work_id: "456",
-      unit: "Unit 2",
-      weight: "2",
-      unit_price: "200",
-      amount: "400",
-      cost_id: "456",
-    },
-  ]);
-  const [count, setCount] = useState(2);
+  const [dataSource, setDataSource] = useState(dataTable);
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    setDataTable(dataSource)
+  }, [dataSource]);
+
+  useEffect(() => {
+    setDataTable(dataSource)
+  }, [dataSource]);
+
+
   const handleDelete = (key) => {
     const newData = dataSource.filter((item) => item.key !== key);
     setDataSource(newData);
@@ -174,6 +161,7 @@ const TableBottom = ({ isEdit, setIsEdit, setDataTable, dataTable }) => {
   const handleAdd = () => {
     const newData = {
       key: count,
+      id: "",
       item: "",
       work_id: "",
       unit: "",
