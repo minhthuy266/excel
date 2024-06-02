@@ -1,7 +1,7 @@
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Col, DatePicker, Form, Input, Row, Select, Space } from "antd";
 import dayjs from "dayjs";
-import { useAddNewBudgetMutation } from "features/budget/budgetSlice";
+import {useAddNewBudgetMutation, useUpdateBudgetMutation} from "features/budget/budgetSlice";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 const layout = {
@@ -53,7 +53,7 @@ const onChange = (date, dateString) => {
 const FormTop = ({ isEdit, dataTable, budgetDetail }) => {
   const [form] = Form.useForm();
 
-  const [addNewBudget] = useAddNewBudgetMutation();
+  const [updateBudget] = useUpdateBudgetMutation();
   const location = useLocation();
 
   const onFinish = (values) => {
@@ -69,7 +69,7 @@ const FormTop = ({ isEdit, dataTable, budgetDetail }) => {
 
     console.log("VL", values)
 
-    addNewBudget({
+    updateBudget({
       project_id: location.search.slice(12, location.search.length),
       data: dataTable,
       budget_date: values?.budget_date?.map(function (item) {
@@ -87,8 +87,8 @@ const FormTop = ({ isEdit, dataTable, budgetDetail }) => {
         project_no: budgetDetail?.project?.project_no,
         project_name: budgetDetail?.project?.project_name,
         client: budgetDetail?.project?.client,
-        contract_amount: budgetDetail?.project?.contract_amount,
-        budget_date: budgetDetail?.project?.budget_date?.map(function (item) {
+        contract_amount: budgetDetail?.project?.amount,
+        budget_date: budgetDetail?.budget_date?.map(function (item) {
           return {
             date: dayjs(item.date),
             item: item.item,
@@ -98,9 +98,7 @@ const FormTop = ({ isEdit, dataTable, budgetDetail }) => {
       }) ;
     }
   }, [budgetDetail, form]);
-
-  console.log("budgetDetail?.projectbudgetDetail?.project", budgetDetail?.project)
-
+  
   return (
     <>
       <Form
@@ -146,7 +144,7 @@ const FormTop = ({ isEdit, dataTable, budgetDetail }) => {
 
         <div className="my-16 text-[24px]">Budget Timeline</div>
 
-        <Form.List name="budget_date">
+          <Form.List name="budget_date">
           {(fields, { add, remove }) => (
             <>
             <Form.Item>

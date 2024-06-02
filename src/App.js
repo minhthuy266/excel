@@ -20,6 +20,7 @@ import POListScreen from "screen/POScreen/POListScreen";
 import CostControlListScreen from "screen/CostControlScreen/CostControlListScreen";
 import POCreateScreen from "screen/POScreen/create";
 import CostControlCreateScreen from "./screen/CostControlScreen/create";
+import BudgetCreateScreen from "./screen/BudgetScreen/create";
 
 function App() {
   const {
@@ -60,7 +61,7 @@ function App() {
             <Route path="budget" element={<BudgetScreen />}></Route>
             <Route path="budget-list" element={<BudgetListScreen />}></Route>
             <Route path="budget-list/:id" element={<BudgetScreen />}></Route>
-            <Route path="budget/create" element={<BudgetScreen />}></Route>
+            <Route path="budget/create" element={<BudgetCreateScreen />}></Route>
 
             <Route path="po" element={<POScreen />}></Route>
             <Route path="po-list" element={<POListScreen />}></Route>

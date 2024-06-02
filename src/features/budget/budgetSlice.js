@@ -41,6 +41,22 @@ export const budgetsSlice = apiSlice.injectEndpoints({
         },
       ],
     }),
+
+    updateBudget: builder.mutation({
+      query: (initialProjectData) => ({
+        url: "/budget/update",
+        method: "POST",
+        body: {
+          ...initialProjectData,
+        },
+      }),
+      invalidatesTags: [
+        {
+          type: "Budget",
+          id: "LIST",
+        },
+      ],
+    }),
   }),
 });
 
@@ -48,4 +64,5 @@ export const {
   useGetBudgetsQuery,
   useGetBudgetByIdQuery,
   useAddNewBudgetMutation,
+  useUpdateBudgetMutation,
 } = budgetsSlice;
