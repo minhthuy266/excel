@@ -1,5 +1,5 @@
-import FormCreate from "components/POScreenComponents/Create/FormCreate";
-import TableBottom from "components/POScreenComponents/TableBottom";
+import FormCreate from "components/CostControlScreenComponents/FormTop/FormCreate";
+import TableBottom from "components/CostControlScreenComponents/TableBottom";
 import React, { useState } from "react";
 import {useSearchParams} from 'react-router-dom';
 import {useGetProjectByIdQuery,} from "../../features/project/projectSlice";

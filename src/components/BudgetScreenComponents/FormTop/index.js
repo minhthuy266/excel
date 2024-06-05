@@ -57,17 +57,6 @@ const FormTop = ({ isEdit, dataTable, budgetDetail }) => {
   const location = useLocation();
 
   const onFinish = (values) => {
-    console.log({
-      project_id: location.search.slice(12, location.search.length),
-      budget_date: values.budget_date ? values.budget_date.map(function (item) {
-        return {
-          ...item,
-          date: dayjs(item.date).format("YYYY-MM-DD"),
-        } 
-      }) : [],
-    });
-
-    console.log("VL", values)
 
     updateBudget({
       project_id: location.search.slice(12, location.search.length),
