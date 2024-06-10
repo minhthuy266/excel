@@ -83,7 +83,7 @@ const CostControlListScreen = () => {
 
   return (
       <div>
-        <div className="flex justify-end">
+        <div className="flex justify-end mb-4">
           <Button onClick={() => navigate(`/dash/cost-control/create?project_no=${idProject}`)}>
             Thêm Cost
           </Button>

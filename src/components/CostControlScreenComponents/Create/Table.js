@@ -42,6 +42,7 @@ const EditableCell = ({
         ...record,
         ...values,
       });
+      console.log("ooooo", values);
     } catch (errInfo) {
       console.log("Save failed:", errInfo);
     }
@@ -78,9 +79,10 @@ const EditableCell = ({
   return <td {...restProps}>{childNode}</td>;
 };
 
-const TableBottom = ({ isEdit, dataSourceParent, setDataSourceParent }) => {
+const TableBottom = ({ isEdit, setIsEdit, dataSourceParent, setDataSourceParent }) => {
   const [dataSource, setDataSource] = useState(dataSourceParent);
   const [count, setCount] = useState(0);
+
   useEffect(() => {
     setDataSourceParent(dataSource)
   }, [dataSource])
@@ -101,7 +103,7 @@ const TableBottom = ({ isEdit, dataSourceParent, setDataSourceParent }) => {
       fixed: "left",
     },
     {
-      title: "WORK ID",
+      title: "Work Id",
       dataIndex: "work_id",
       editable: isEdit,
     },
@@ -111,7 +113,7 @@ const TableBottom = ({ isEdit, dataSourceParent, setDataSourceParent }) => {
       editable: isEdit,
     },
     {
-      title: "Weight",
+      title: "Completed Weight",
       dataIndex: "weight",
       editable: isEdit,
     },
@@ -126,13 +128,23 @@ const TableBottom = ({ isEdit, dataSourceParent, setDataSourceParent }) => {
       editable: isEdit,
     },
     {
-      title: "VAT",
-      dataIndex: "tax",
+      title: "Payment Amount",
+      dataIndex: "payment_amount",
       editable: isEdit,
     },
     {
-      title: "Amount (Incl TAX)",
-      dataIndex: "tax_price",
+      title: "Invoice Amount",
+      dataIndex: "invoice_amount",
+      editable: isEdit,
+    },
+    {
+      title: "Invoice No",
+      dataIndex: "invoice_no",
+      editable: isEdit,
+    },
+    {
+      title: "Invoice Date",
+      dataIndex: "invoice_date",
       editable: isEdit,
     },
     {
@@ -158,23 +170,22 @@ const TableBottom = ({ isEdit, dataSourceParent, setDataSourceParent }) => {
   const handleAdd = () => {
     const newData = {
       key: count,
-      id: "",
       item: "",
       work_id: "",
       unit: "",
       weight: "",
       unit_price: "",
-      amount: "",
-      tax: "",
-      tax_price: "",
-      cost_id: "",
+      payment_amount: "",
+      invoice_amount: "",
+      invoice_no: "",
+      invoice_date: "",
+      cost_id: ""
     };
     if (typeof dataSource == 'undefined') {
       setDataSource([newData]);
     } else {
       setDataSource([...dataSource, newData]);
     }
-
     setCount(count + 1);
   };
   const handleSave = (row) => {
@@ -208,11 +219,11 @@ const TableBottom = ({ isEdit, dataSourceParent, setDataSourceParent }) => {
       }),
     };
   });
-  const totalAmount = dataSource?.map((item, total) => total + item.tax_price)
-console.log(totalAmount)
+
+  console.log("dataSource", dataSource);
+
   return (
     <div>
-      
       <Button
         onClick={handleAdd}
         type="primary"
@@ -222,16 +233,6 @@ console.log(totalAmount)
       >
         Add a row
       </Button>
-      {
-        typeof totalAmount != 'undefined'
-        ? (
-          <div className="mb-4">
-            Total amount: {totalAmount}
-          </div>
-          ) : null
-      }
-
-
       <Table
         components={components}
         rowClassName={() => "editable-row"}

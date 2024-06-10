@@ -78,18 +78,7 @@ const FormCreate = ({ idProject, dataSourceParent, contract, setMessage }) => {
             <Form.Item name="po_no" label="PO No">
               <Input />
             </Form.Item>
-
-            <Form.Item
-              name="poAmountExlTax"
-              label="PO Amount (Excl TAX)"
-            >
-              <Input />
-            </Form.Item>
-
-            <Form.Item
-              name="poAmountInclTax"
-              label="PO Amount (Incl TAX)"
-            >
+            <Form.Item name="rev" label="Rev">
               <Input />
             </Form.Item>
           </Col>
@@ -107,9 +96,7 @@ const FormCreate = ({ idProject, dataSourceParent, contract, setMessage }) => {
               <DatePicker onChange={onChange} />
             </Form.Item>
 
-            <Form.Item name="rev" label="Rev">
-              <Input />
-            </Form.Item>
+
           </Col>
         </Row>
       </Form>

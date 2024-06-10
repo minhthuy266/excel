@@ -1,5 +1,5 @@
 import { Switch } from "antd";
-import FormTop from "components/CostControlScreenComponents/FormTop";
+import FormTop from "components/CostControlScreenComponents/Create/FormCreate";
 import TableBottom from "components/CostControlScreenComponents/TableBottom";
 import React, { useState } from "react";
 
