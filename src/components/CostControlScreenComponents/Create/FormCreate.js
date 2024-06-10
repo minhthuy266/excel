@@ -1,10 +1,9 @@
 import { Col, DatePicker, Form, Input, Row, Button, Select } from "antd";
-import { useAddNewPoMutation, useGetPoByIdQuery, useUpdatePoMutation } from "features/po/poSlice";
+import { useAddNewCostControlMutation } from "features/costControl/costControlSlice";
 import { random } from "lodash";
 import moment from "moment";
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate, useSearchParams, useParams } from 'react-router-dom';
-import dayjs from "dayjs";
 
 const layout = {
     labelCol: {
@@ -43,25 +42,40 @@ const suffixSelectorContractAmount = (
 );
 
 
-const FormCreate = ({ idProject, dataSourceParent, contract, setMessage }) => {
+const FormCreate = ({ idProject, dataSourceParent, contract, setMessage, listPo }) => {
     const navigate = useNavigate();
-    const [addNewPo] = useAddNewPoMutation();
+    const [addNewCostControl] = useAddNewCostControlMutation();
     const [date, setDate] = useState();
+    const [purchasedId, setPurchasedId] = useState();
+    const [errorPurchasedId, setErrorPurchasedId] = useState();
     const data = {
         project_no: contract.project_no
     }
     const onFinish = (values) => {
         values.project_id = idProject;
+        values.purchased_id = purchasedId;
+
         values.date = moment(date).format("YYYY-MM-DD")
         values.data = dataSourceParent;
 
-        addNewPo(values).then(res => {
+        if (!purchasedId) {
+            setErrorPurchasedId('Vui lòng chọn purchased id')
+            return false
+        }
+        addNewCostControl(values).then(res => {
+            console.log('res', res)
             if(res?.data.status) {
                 setMessage(res?.data.message)
             }
         })
     };
 
+    const poOption = listPo?.data.map(item => {
+        return {
+            value: item.id,
+            label: item.po_no
+        }
+    })
     const onChange = (date, dateString) => {
         setDate(dateString)
     };
@@ -94,29 +108,19 @@ const FormCreate = ({ idProject, dataSourceParent, contract, setMessage }) => {
                     <Col span={12}>
                         <Form.Item name="purchased_id" label="Purchased Order">
                             <Select
-                                defaultValue="lucy"
-                                onChange={()=>{}}
-                                options={[
-                                    {
-                                        value: 'jack',
-                                        label: 'Jack',
-                                    },
-                                    {
-                                        value: 'lucy',
-                                        label: 'Lucy',
-                                    },
-                                    {
-                                        value: 'Yiminghe',
-                                        label: 'yiminghe',
-                                    },
-                                    {
-                                        value: 'disabled',
-                                        label: 'Disabled',
-                                        disabled: true,
-                                    },
-                                ]}
+                              defaultValue="Chọn purchased order"
+                              onChange={(value) => {
+                                  setPurchasedId(value)
+                              }}
+                              options={poOption}
                             />
+                            {
+                                errorPurchasedId
+                                ? (<div style={{color: "red"}}>{errorPurchasedId}</div>) : null
+                            }
+
                         </Form.Item>
+
                     </Col>
                 </Row>
             </Form>

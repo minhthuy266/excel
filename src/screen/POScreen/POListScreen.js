@@ -47,16 +47,16 @@ const POListScreen = () => {
   const { data } = useGetPOsQuery()
 
   return (
-    <div>
-        <div className="flex justify-end">
-          <Button onClick={() => navigate(`/dash/po/create?project_no=${idProject}`)}>
-            Thêm đơn hàng
-          </Button>
-        </div>
-        <div className="my-[10px]">
-          <Table rowKey={(record) => record.id} columns={columns} dataSource={data?.data} />
-        </div>
-    </div>
+      <div>
+          <div className="flex justify-end">
+              <Button onClick={() => navigate(`/dash/po/create?project_no=${idProject}`)}>
+                  Thêm đơn hàng
+              </Button>
+          </div>
+          <div className="my-[10px]">
+              <Table rowKey={(record) => record.id} columns={columns} dataSource={data?.data}/>
+          </div>
+      </div>
   )
 }
 
