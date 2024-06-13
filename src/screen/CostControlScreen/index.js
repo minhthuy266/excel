@@ -1,10 +1,15 @@
 import { Switch } from "antd";
-import FormTop from "components/CostControlScreenComponents/Create/FormCreate";
+import FormTop from "components/CostControlScreenComponents/FormTop";
 import TableBottom from "components/CostControlScreenComponents/TableBottom";
 import React, { useState } from "react";
+import {useSearchParams} from "react-router-dom";
 
 const CostControlScreen = () => {
   const [isEdit, setIsEdit] = useState(false);
+  const [searchParams] = useSearchParams();
+  const idProject = searchParams.get("project_no");
+
+
   const onChange = () => {
     setIsEdit(!isEdit);
   };
