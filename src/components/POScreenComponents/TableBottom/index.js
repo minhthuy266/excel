@@ -208,8 +208,6 @@ const TableBottom = ({ isEdit, dataSourceParent, setDataSourceParent }) => {
       }),
     };
   });
-  const totalAmount = dataSource?.map((item, total) => total + item.tax_price)
-console.log(totalAmount)
   return (
     <div>
       
@@ -222,15 +220,6 @@ console.log(totalAmount)
       >
         Add a row
       </Button>
-      {
-        typeof totalAmount != 'undefined'
-        ? (
-          <div className="mb-4">
-            Total amount: {totalAmount}
-          </div>
-          ) : null
-      }
-
 
       <Table
         components={components}

@@ -1,7 +1,8 @@
 import { Button, Table } from 'antd';
 import { useGetPOsQuery } from 'features/po/poSlice';
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import {numberWithCommas} from "../../util/functionUtil";
 
 const POListScreen = () => {
   const navigate = useNavigate();
@@ -45,13 +46,34 @@ const POListScreen = () => {
   const idProject = searchParams.get("project_no")
 
   const { data } = useGetPOsQuery()
+  const orderDetail = [];
+  data?.data.map(item => {
+    item.order_detail.map(val => {
+      orderDetail.push(val);
+    })
+  })
+
+  let totalAmount = 0;
+  let totalAmountTax = 0;
+  orderDetail.map(item => {
+    totalAmount = item.amount;
+    totalAmountTax = item.tax_price;
+  })
 
   return (
       <div>
-          <div className="flex justify-end">
-              <Button onClick={() => navigate(`/dash/po/create?project_no=${idProject}`)}>
-                  Thêm đơn hàng
-              </Button>
+
+          <div className="flex justify-between">
+              <div>
+                  <p>Total amount: {numberWithCommas(totalAmount)}</p>
+                  <p>Total amount (Incl TAX): {numberWithCommas(totalAmountTax)}</p>
+
+              </div>
+              <div>
+                  <Button onClick={() => navigate(`/dash/po/create?project_no=${idProject}`)}>
+                      Thêm đơn hàng
+                  </Button>
+              </div>
           </div>
           <div className="my-[10px]">
               <Table rowKey={(record) => record.id} columns={columns} dataSource={data?.data}/>

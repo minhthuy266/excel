@@ -25,10 +25,30 @@ export const costControlSlice = apiSlice.injectEndpoints({
       ],
       providesTags: (result, error, arg) => [{ type: "Cost", id: arg }],
     }),
+    updateCostControl: builder.mutation({
+      query: (initialPoData) => ({
+        url: "/cost/update",
+        method: "POST",
+        body: {
+          ...initialPoData,
+        },
+      }),
+      invalidatesTags: (result, error, arg) => [
+        {
+          type: "costControl",
+          id: arg.id,
+        },
+        {
+          type: "costControl",
+          id: "LIST",
+        },
+      ],
+    }),
   }),
 });
 
 export const {
   useGetCostControlsQuery,
-  useAddNewCostControlMutation
+  useAddNewCostControlMutation,
+  useUpdateCostControlMutation
 } = costControlSlice;
