@@ -33,6 +33,16 @@ const POListScreen = () => {
         key: "rev",
       },
       {
+        title: "Total amount",
+        dataIndex: "totalAmount",
+        key: "totalAmount",
+      },
+      {
+        title: "Total amount (Incl TAX)",
+        dataIndex: "totalAmountTax",
+        key: "totalAmountTax",
+      },
+      {
         title: "Action",
         key: "action",
         render: (text, record) => (
@@ -46,29 +56,28 @@ const POListScreen = () => {
   const idProject = searchParams.get("project_no")
 
   const { data } = useGetPOsQuery()
-  const orderDetail = [];
-  data?.data.map(item => {
+
+  const newData = data?.data.map(item => {
+    let totalAmount = 0;
+    let totalAmountTax = 0;
+
     item.order_detail.map(val => {
-      orderDetail.push(val);
+      totalAmount += val.amount
+      totalAmountTax += val.tax_price;
     })
-  })
 
-  let totalAmount = 0;
-  let totalAmountTax = 0;
-  orderDetail.map(item => {
-    totalAmount = item.amount;
-    totalAmountTax = item.tax_price;
-  })
+    return {
+      ...item,
+      totalAmount: numberWithCommas(totalAmount),
+      totalAmountTax: numberWithCommas(totalAmountTax)
+    }
 
+  })
+  console.log(newData)
   return (
       <div>
 
-          <div className="flex justify-between">
-              <div>
-                  <p>Total amount: {numberWithCommas(totalAmount)}</p>
-                  <p>Total amount (Incl TAX): {numberWithCommas(totalAmountTax)}</p>
-
-              </div>
+          <div className="flex justify-end">
               <div>
                   <Button onClick={() => navigate(`/dash/po/create?project_no=${idProject}`)}>
                       Thêm đơn hàng
@@ -76,7 +85,7 @@ const POListScreen = () => {
               </div>
           </div>
           <div className="my-[10px]">
-              <Table rowKey={(record) => record.id} columns={columns} dataSource={data?.data}/>
+              <Table rowKey={(record) => record.id} columns={columns} dataSource={newData}/>
           </div>
       </div>
   )
