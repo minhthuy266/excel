@@ -11,6 +11,19 @@ export const costControlSlice = apiSlice.injectEndpoints({
         return [{ type: "Cost", id: "LIST" }];
       },
     }),
+    getCostControlById: builder.query({
+      query: (id) => ({
+        url: `/cost/edit`,
+        method: "GET",
+        params: {
+          id,
+        },
+      }),
+      transformResponse: (responseData) => {
+        return responseData.data;
+      },
+      providesTags: (result, error, arg) => [{ type: "Po", id: arg }],
+    }),
     addNewCostControl: builder.mutation({
       query: (credential) => ({
         url: "/cost/create",
@@ -26,11 +39,11 @@ export const costControlSlice = apiSlice.injectEndpoints({
       providesTags: (result, error, arg) => [{ type: "Cost", id: arg }],
     }),
     updateCostControl: builder.mutation({
-      query: (initialPoData) => ({
+      query: (initialCostData) => ({
         url: "/cost/update",
         method: "POST",
         body: {
-          ...initialPoData,
+          ...initialCostData,
         },
       }),
       invalidatesTags: (result, error, arg) => [
@@ -50,5 +63,6 @@ export const costControlSlice = apiSlice.injectEndpoints({
 export const {
   useGetCostControlsQuery,
   useAddNewCostControlMutation,
+  useGetCostControlByIdQuery,
   useUpdateCostControlMutation
 } = costControlSlice;

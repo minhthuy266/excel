@@ -1,5 +1,6 @@
-import { Button, Form, Input, Popconfirm, Table } from "antd";
+import {Button, DatePicker, Form, Input, Popconfirm, Table} from "antd";
 import React, { useContext, useEffect, useRef, useState } from "react";
+import dayjs from "dayjs";
 const EditableContext = React.createContext(null);
 const EditableRow = ({ index, ...props }) => {
   const [form] = Form.useForm();
@@ -146,6 +147,29 @@ const TableBottom = ({ isEdit, setIsEdit, dataSourceParent, setDataSourceParent 
       title: "Invoice Date",
       dataIndex: "invoice_date",
       editable: isEdit,
+      render: (text, record) => {
+        console.log("dayjs(record?.delivery_date, ", dayjs(record?.delivery_date, "YYYY-MM-DD"))
+        return (
+          <div>
+            <DatePicker
+              onChange={(date, dateString) => {
+                const newData = [...dataSource];
+                const index = newData.findIndex(
+                  (item) => item.id === record.id
+                );
+                if (index > -1) {
+                  newData[index].delivery_date =
+                    dayjs(dateString).format("YYYY-MM-DD");
+                  setDataSource(newData);
+                  // setData(newData);
+                  console.log("ddd", dateString);
+                }
+              }}
+              disabled={!isEdit}
+            />
+          </div>
+        );
+      },
     },
     {
       title: "Cost ID",
@@ -175,6 +199,7 @@ const TableBottom = ({ isEdit, setIsEdit, dataSourceParent, setDataSourceParent 
       unit: "",
       weight: "",
       unit_price: "",
+      amount: "",
       payment_amount: "",
       invoice_amount: "",
       invoice_no: "",
@@ -220,7 +245,7 @@ const TableBottom = ({ isEdit, setIsEdit, dataSourceParent, setDataSourceParent 
     };
   });
 
-  console.log("dataSource", dataSource);
+  console.log("dataSource", dataSource);  
 
   return (
     <div>

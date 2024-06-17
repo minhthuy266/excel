@@ -1,4 +1,9 @@
-import { Col, Form, Input, Row } from "antd";
+import { Col, DatePicker, Form, Input, Row, Button, Select } from "antd";
+import {useUpdateCostControlMutation} from "features/costControl/costControlSlice";
+import moment from "moment";
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
+
 const layout = {
   labelCol: {
     span: 8,
@@ -20,55 +25,108 @@ const validateMessages = {
   },
 };
 /* eslint-enable no-template-curly-in-string */
-
-const onFinish = (values) => {
-  console.log(values);
-};
-
-const FormTop = ({ isEdit }) => {
-  return (
-    <Form
-      {...layout}
-      name="nest-messages"
-      labelAlign="left"
-      onFinish={onFinish}
-      validateMessages={validateMessages}
-      disabled={!isEdit}
+const { Option } = Select;
+const suffixSelectorContractAmount = (
+  <Form.Item name="suffix" noStyle>
+    <Select
+      style={{
+        width: 100,
+      }}
+      defaultValue="VND"
     >
-      <Row gutter={24}>
-        <Col span={12}>
-          <Form.Item
-            name={["user", "projectNo"]}
-            label="Project No"
-            rules={[
+      <Option value="USD">USD</Option>
+      <Option value="VND">VND</Option>
+    </Select>
+  </Form.Item>
+);
+
+
+const FormCreate = ({ dataSourceParent, costControl, setMessage, listPo }) => {
+  const navigate = useNavigate();
+  const [updateCostControl] = useUpdateCostControlMutation();
+  const [date, setDate] = useState();
+  const [purchasedId, setPurchasedId] = useState(costControl.purchased.id);
+  const [errorPurchasedId, setErrorPurchasedId] = useState();
+  const data = {
+    project_no: costControl.project.project_no
+  }
+
+  const onFinish = (values) => {
+    values.project_id = costControl.project.id;
+    values.purchased_id = purchasedId;
+
+    values.date = moment(date).format("YYYY-MM-DD")
+    values.data = dataSourceParent;
+
+    if (!purchasedId) {
+      setErrorPurchasedId('Vui lòng chọn purchased id')
+      return false
+    }
+
+    updateCostControl(values).then(res => {
+
+      if(res?.data.status) {
+        setMessage(res?.data.message)
+      }
+    })
+  };
+
+  const poOption = listPo?.data.map(item => {
+    return {
+      value: item.id,
+      label: item.po_no
+    }
+  })
+  const onChange = (date, dateString) => {
+    setDate(dateString)
+  };
+
+  return (
+    <div>
+      <Form
+        {...layout}
+        name="nest-messages"
+        labelAlign="left"
+        onFinish={onFinish}
+        validateMessages={validateMessages}
+        initialValues={{
+          ...data
+        }}
+      >
+        <div className="flex justify-end">
+          <Form.Item className="flex mr-2">
+            <Button htmlType="submit">Lưu</Button>
+          </Form.Item>
+        </div>
+
+        <Row gutter={24}>
+          <Col span={12}>
+            <Form.Item name="project_no" label="Project No">
+              <Input disabled={true} />
+            </Form.Item>
+
+          </Col>
+          <Col span={12}>
+            <Form.Item name="purchased_id" label="Purchased Order">
+              <Select
+                defaultValue={costControl.purchased.po_no}
+                onChange={(value) => {
+                  setPurchasedId(value)
+                }}
+                options={poOption}
+              />
               {
-                required: true,
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item name={["user", "poNo"]} label="PO No">
-            <Input />
-          </Form.Item>
+                errorPurchasedId
+                  ? (<div style={{color: "red"}}>{errorPurchasedId}</div>) : null
+              }
 
-          <Form.Item name={["user", "supplier"]} label="Supplier/Subcon">
-            <Input />
-          </Form.Item>
-        </Col>
+            </Form.Item>
 
-        <Col span={12}>
-          <Form.Item name={["user", "divIncharge"]} label="Div Incharge">
-            <Input />
-          </Form.Item>
-
-          <Form.Item name={["user", "submitDate"]} label="Submit Date">
-            <Input />
-          </Form.Item>
-        </Col>
-      </Row>
-    </Form>
+          </Col>
+        </Row>
+      </Form>
+    </div>
   );
 };
 
-export default FormTop;
+export default FormCreate;

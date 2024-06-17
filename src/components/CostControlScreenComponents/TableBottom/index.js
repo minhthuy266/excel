@@ -79,34 +79,20 @@ const EditableCell = ({
   return <td {...restProps}>{childNode}</td>;
 };
 
-const TableBottom = ({ isEdit, setIsEdit }) => {
-  const [dataSource, setDataSource] = useState([
-    {
-      key: 0,
-      item: "Item 1",
-      workId: "123",
-      unit: "Unit 1",
-      weight: "1",
-      unitPrice: "100",
-      amount: "100",
-      costId: "123",
-    },
-    {
-      key: 1,
-      item: "Item 2",
-      workId: "456",
-      unit: "Unit 2",
-      weight: "2",
-      unitPrice: "200",
-      amount: "400",
-      costId: "456",
-    },
-  ]);
+const TableBottom = ({ isEdit, dataSourceParent, setDataSourceParent }) => {
+  const [dataSource, setDataSource] = useState(dataSourceParent);
   const [count, setCount] = useState(2);
   const handleDelete = (key) => {
     const newData = dataSource.filter((item) => item.key !== key);
     setDataSource(newData);
   };
+  useEffect(() => {
+    setDataSourceParent(dataSource)
+  }, [dataSource])
+
+  useEffect(() => {
+    setDataSource(dataSourceParent)
+  }, [dataSourceParent])
   const defaultColumns = [
     {
       title: "Item",
@@ -116,7 +102,7 @@ const TableBottom = ({ isEdit, setIsEdit }) => {
     },
     {
       title: "WORK ID",
-      dataIndex: "workId",
+      dataIndex: "work_id",
       editable: isEdit,
     },
     {
@@ -126,12 +112,12 @@ const TableBottom = ({ isEdit, setIsEdit }) => {
     },
     {
       title: "Completed Weight",
-      dataIndex: "completedWeight",
+      dataIndex: "weight",
       editable: isEdit,
     },
     {
       title: "Unit Price",
-      dataIndex: "unitPrice",
+      dataIndex: "unit_price",
       editable: isEdit,
     },
     {
@@ -141,27 +127,27 @@ const TableBottom = ({ isEdit, setIsEdit }) => {
     },
     {
       title: "Payment Amount",
-      dataIndex: "paymentAmount",
+      dataIndex: "payment_amount",
       editable: isEdit,
     },
     {
       title: "Invoice Amount",
-      dataIndex: "invoiceAmount",
+      dataIndex: "invoice_amount",
       editable: isEdit,
     },
     {
       title: "Invoice No",
-      dataIndex: "invoiceNo",
+      dataIndex: "invoice_no",
       editable: isEdit,
     },
     {
       title: "Invoice Date",
-      dataIndex: "invoiceDate",
+      dataIndex: "invoice_date",
       editable: isEdit,
     },
     {
       title: "Cost ID",
-      dataIndex: "costID",
+      dataIndex: "cost_id",
       editable: isEdit,
     },
     {
@@ -183,12 +169,16 @@ const TableBottom = ({ isEdit, setIsEdit }) => {
     const newData = {
       key: count,
       item: "",
-      workId: "",
+      work_id: "",
       unit: "",
       weight: "",
-      unitPrice: "",
+      unit_price: "",
       amount: "",
-      costId: "",
+      payment_amount: "",
+      invoice_amount: "",
+      invoice_no: "",
+      invoice_date: "",
+      cost_id: ""
     };
     setDataSource([...dataSource, newData]);
     setCount(count + 1);
@@ -224,8 +214,6 @@ const TableBottom = ({ isEdit, setIsEdit }) => {
       }),
     };
   });
-
-  console.log("dataSource", dataSource);
 
   return (
     <div>
